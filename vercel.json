@@ -2,6 +2,21 @@
   "rewrites": [
     {
       "source": "/backend/:path*",
+      "has": [{ "type": "host", "value": "app.hemato.in" }],
+      "destination": "https://smartgumastha-backend-production.up.railway.app/:path*"
+    },
+    {
+      "source": "/backend/:path*",
+      "has": [{ "type": "host", "value": "lis.hemato.in" }],
+      "destination": "https://smartgumastha-backend-production.up.railway.app/:path*"
+    },
+    {
+      "source": "/backend/:path*",
+      "has": [{ "type": "host", "value": "physio.hemato.in" }],
+      "destination": "https://smartgumastha-backend-production.up.railway.app/:path*"
+    },
+    {
+      "source": "/backend/:path*",
       "destination": "https://smartgumastha-backend-production.up.railway.app/:path*"
     },
     {
@@ -18,18 +33,6 @@
       "source": "/:path*",
       "has": [{ "type": "host", "value": "physio.hemato.in" }],
       "destination": "/app.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "has": [{ "type": "host", "value": "api.hemato.in" }],
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,PUT,DELETE,OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type,Authorization,x-auth-token" },
-        { "key": "Access-Control-Allow-Credentials", "value": "true" }
-      ]
     }
   ],
   "redirects": [
