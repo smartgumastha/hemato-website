@@ -2,43 +2,7 @@
   "rewrites": [
     {
       "source": "/backend/:path*",
-      "has": [{ "type": "host", "value": "app.hemato.in" }],
       "destination": "https://smartgumastha-backend-production.up.railway.app/:path*"
-    },
-    {
-      "source": "/backend/:path*",
-      "has": [{ "type": "host", "value": "lis.hemato.in" }],
-      "destination": "https://smartgumastha-backend-production.up.railway.app/:path*"
-    },
-    {
-      "source": "/backend/:path*",
-      "has": [{ "type": "host", "value": "physio.hemato.in" }],
-      "destination": "https://smartgumastha-backend-production.up.railway.app/:path*"
-    },
-    {
-      "source": "/backend/:path*",
-      "has": [{ "type": "host", "value": "hemato.in" }],
-      "destination": "https://smartgumastha-backend-production.up.railway.app/:path*"
-    },
-    {
-      "source": "/backend/:path*",
-      "has": [{ "type": "host", "value": "www.hemato.in" }],
-      "destination": "https://smartgumastha-backend-production.up.railway.app/:path*"
-    },
-    {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "app.hemato.in" }],
-      "destination": "/app.html"
-    },
-    {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "lis.hemato.in" }],
-      "destination": "/app.html"
-    },
-    {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "physio.hemato.in" }],
-      "destination": "/app.html"
     }
   ],
   "redirects": [
@@ -47,12 +11,27 @@
       "destination": "https://hemato.in/:path*",
       "permanent": true,
       "has": [{ "type": "host", "value": "mediwhats.in" }]
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "has": [{ "type": "host", "value": "app.hemato.in" }],
+      "dest": "/app.html"
     },
     {
-      "source": "/:path*",
-      "destination": "https://hemato.in/:path*",
-      "permanent": true,
-      "has": [{ "type": "host", "value": "www.mediwhats.in" }]
+      "src": "/(.*)",
+      "has": [{ "type": "host", "value": "lis.hemato.in" }],
+      "dest": "/app.html"
+    },
+    {
+      "src": "/(.*)",
+      "has": [{ "type": "host", "value": "physio.hemato.in" }],
+      "dest": "/app.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ]
 }
