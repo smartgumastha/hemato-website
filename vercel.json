@@ -17,6 +17,12 @@
     },
     {
       "source": "/backend/:path*",
+      "has": [{ "type": "host", "value": "hemato.in" }],
+      "destination": "https://smartgumastha-backend-production.up.railway.app/:path*"
+    },
+    {
+      "source": "/backend/:path*",
+      "has": [{ "type": "host", "value": "www.hemato.in" }],
       "destination": "https://smartgumastha-backend-production.up.railway.app/:path*"
     },
     {
