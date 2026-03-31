@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/backend/:path*",
+      "destination": "https://smartgumastha-backend-production.up.railway.app/:path*"
+    },
+    {
       "source": "/:path*",
       "has": [{ "type": "host", "value": "app.hemato.in" }],
       "destination": "/app.html"
@@ -14,10 +18,6 @@
       "source": "/:path*",
       "has": [{ "type": "host", "value": "physio.hemato.in" }],
       "destination": "/app.html"
-    },
-    {
-      "source": "/backend/:path*",
-      "destination": "https://smartgumastha-backend-production.up.railway.app/:path*"
     }
   ],
   "headers": [
