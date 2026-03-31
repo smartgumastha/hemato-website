@@ -1,0 +1,29 @@
+{
+  "rewrites": [
+    {
+      "source": "/backend/:path*",
+      "destination": "https://smartgumastha-backend-production.up.railway.app/:path*"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "destination": "https://hemato.in/:path*",
+      "permanent": true,
+      "has": [{ "type": "host", "value": "mediwhats.in" }]
+    },
+    {
+      "source": "/:path*",
+      "destination": "https://hemato.in/:path*",
+      "permanent": true,
+      "has": [{ "type": "host", "value": "www.mediwhats.in" }]
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "app.hemato.in" }],
+      "headers": [{ "key": "x-served-file", "value": "app.html" }]
+    }
+  ]
+}
