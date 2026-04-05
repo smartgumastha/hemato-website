@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Hemato Lab Partner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--red:#DC2626;--red-light:#FEF2F2;--red-dark:#991B1B;
+--green:#059669;--green-light:#ECFDF5;
+--bg:#F8FAFC;--surface:#FFFFFF;--text:#0F172A;--text2:#64748B;--text3:#94A3B8;
+--border:#E2E8F0;--border2:#CBD5E1;
+--amber:#F59E0B;--amber-light:#FFFBEB;
+--blue:#3B82F6;--blue-light:#EFF6FF;
+--purple:#7C3AED;--purple-light:#F5F3FF;
+--radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+--shadow-md:0 4px 6px -1px rgba(0,0,0,.08),0 2px 4px -2px rgba(0,0,0,.06);
+--shadow-lg:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.06);
+}
+html{font-size:15px}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4,h5{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+input,textarea,select{font-family:inherit;outline:none}
+.hidden{display:none!important}
+
+/* ===== LOGIN SCREEN ===== */
+#loginScreen{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#FEF2F2 0%,#FFFFFF 50%,#F8FAFC 100%);
+  padding:24px;
+}
+.login-logo{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.login-logo i{font-size:32px;color:var(--red)}
+.login-logo span{font-family:'Plus Jakarta Sans';font-size:28px;font-weight:800;color:var(--red)}
+.login-sub{color:var(--text2);font-size:.9rem;margin-bottom:36px;font-weight:500}
+.login-card{
+  background:var(--surface);border-radius:var(--radius);padding:32px 28px;
+  width:100%;max-width:400px;box-shadow:var(--shadow-lg);
+}
+.login-card h2{font-size:1.35rem;margin-bottom:4px}
+.login-card p{color:var(--text2);font-size:.85rem;margin-bottom:24px}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:.8rem;font-weight:600;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.form-input{
+  width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;
+  font-size:1rem;transition:border .2s;background:var(--bg);
+}
+.form-input:focus{border-color:var(--red);background:var(--surface)}
+.btn-primary{
+  width:100%;padding:14px;background:var(--red);color:#fff;font-weight:600;
+  font-size:1rem;border-radius:10px;transition:background .2s;
+}
+.btn-primary:hover{background:var(--red-dark)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.otp-row{display:flex;gap:8px;margin-bottom:20px}
+.otp-box{
+  flex:1;text-align:center;font-size:1.3rem;font-weight:700;padding:12px 0;
+  border:1.5px solid var(--border);border-radius:10px;background:var(--bg);
+  letter-spacing:2px;
+}
+.otp-box:focus{border-color:var(--red);background:var(--surface)}
+.login-footer{text-align:center;margin-top:14px;font-size:.82rem;color:var(--text2)}
+.login-footer a{color:var(--red);font-weight:600;text-decoration:none}
+.otp-timer{text-align:center;font-size:.82rem;color:var(--text2);margin-bottom:14px}
+.otp-timer span{color:var(--red);font-weight:600}
+
+/* ===== APP SHELL ===== */
+#appShell{display:none;flex-direction:column;min-height:100vh}
+.top-header{
+  position:sticky;top:0;z-index:100;background:var(--surface);
+  padding:12px 16px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);
+}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-logo{display:flex;align-items:center;gap:6px}
+.header-logo i{font-size:20px;color:var(--red)}
+.header-logo span{font-family:'Plus Jakarta Sans';font-weight:800;font-size:1.1rem;color:var(--red)}
+.header-lab{font-size:.75rem;color:var(--text2);margin-left:8px;padding-left:8px;border-left:1px solid var(--border)}
+.header-right{display:flex;align-items:center;gap:16px}
+.notif-btn{position:relative;background:none;font-size:1.15rem;color:var(--text2)}
+.notif-badge{position:absolute;top:-4px;right:-6px;width:16px;height:16px;background:var(--red);color:#fff;font-size:.6rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+.profile-btn{width:34px;height:34px;border-radius:50%;background:var(--red-light);color:var(--red);font-weight:700;font-size:.85rem;display:flex;align-items:center;justify-content:center;border:2px solid var(--red)}
+
+.main-content{flex:1;padding:16px;padding-bottom:80px;overflow-y:auto}
+
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:var(--surface);border-top:1px solid var(--border);
+  display:flex;padding:6px 0 env(safe-area-inset-bottom,8px);
+  box-shadow:0 -2px 10px rgba(0,0,0,.06);
+}
+.nav-tab{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:8px 4px;background:none;color:var(--text3);font-size:.65rem;font-weight:600;
+  transition:color .2s;position:relative;
+}
+.nav-tab i{font-size:1.2rem;transition:color .2s}
+.nav-tab.active{color:var(--red)}
+.nav-tab.active::before{content:'';position:absolute;top:-6px;left:20%;right:20%;height:3px;background:var(--red);border-radius:0 0 4px 4px}
+
+.tab-content{display:none}
+.tab-content.active{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== DASHBOARD ===== */
+.welcome-card{
+  background:linear-gradient(135deg,var(--red) 0%,#B91C1C 100%);
+  border-radius:var(--radius);padding:20px;color:#fff;margin-bottom:16px;
+}
+.welcome-card h2{font-size:1.2rem;font-weight:700;margin-bottom:2px}
+.welcome-card .date{font-size:.8rem;opacity:.8}
+.welcome-card .greeting{font-size:.9rem;margin-top:8px;opacity:.9}
+
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.stat-card{
+  background:var(--surface);border-radius:var(--radius);padding:14px;
+  box-shadow:var(--shadow);
+}
+.stat-card .stat-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.95rem;margin-bottom:8px}
+.stat-card .stat-val{font-family:'Plus Jakarta Sans';font-size:1.4rem;font-weight:800}
+.stat-card .stat-label{font-size:.72rem;color:var(--text2);font-weight:500;margin-top:2px}
+
+.toggle-card{
+  background:var(--surface);border-radius:var(--radius);padding:16px;
+  box-shadow:var(--shadow);margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;
+}
+.toggle-card .toggle-info h4{font-size:.95rem}
+.toggle-card .toggle-info p{font-size:.78rem;color:var(--text2)}
+.toggle-switch{
+  width:52px;height:28px;border-radius:14px;background:var(--border2);
+  position:relative;cursor:pointer;transition:background .3s;flex-shrink:0;
+}
+.toggle-switch.on{background:var(--green)}
+.toggle-switch .toggle-knob{
+  position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;
+  background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .3s;
+}
+.toggle-switch.on .toggle-knob{transform:translateX(24px)}
+
+.section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.section-title h3{font-size:1rem}
+.section-title a{font-size:.8rem;color:var(--red);text-decoration:none;font-weight:600}
+
+.recent-order{
+  background:var(--surface);border-radius:var(--radius);padding:14px;
+  box-shadow:var(--shadow);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;
+}
+.ro-left{flex:1}
+.ro-id{font-size:.78rem;color:var(--text2);font-weight:600}
+.ro-tests{font-size:.88rem;font-weight:600;margin:2px 0}
+.ro-time{font-size:.72rem;color:var(--text3)}
+.ro-right{text-align:right}
+.ro-amount{font-weight:700;font-size:.95rem}
+
+.badge{
+  display:inline-block;padding:3px 10px;border-radius:20px;font-size:.68rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.3px;
+}
+.badge-new{background:var(--amber-light);color:#92400E}
+.badge-accepted{background:var(--blue-light);color:#1E40AF}
+.badge-progress{background:var(--purple-light);color:#5B21B6}
+.badge-completed{background:var(--green-light);color:#065F46}
+.badge-rejected{background:var(--red-light);color:var(--red-dark)}
+
+.chart-section{background:var(--surface);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:16px}
+.chart-section h4{font-size:.9rem;margin-bottom:12px}
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:100px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar{width:100%;border-radius:6px 6px 0 0;background:var(--red);min-height:8px;transition:height .5s}
+.bar-label{font-size:.6rem;color:var(--text3);font-weight:600}
+.bar-val{font-size:.6rem;color:var(--text2);font-weight:700}
+
+/* ===== ORDERS ===== */
+.sub-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;-webkit-overflow-scrolling:touch}
+.sub-tabs::-webkit-scrollbar{display:none}
+.sub-tab{
+  padding:8px 14px;border-radius:20px;font-size:.78rem;font-weight:600;
+  white-space:nowrap;background:var(--surface);color:var(--text2);
+  border:1.5px solid var(--border);transition:all .2s;flex-shrink:0;
+}
+.sub-tab.active{background:var(--red);color:#fff;border-color:var(--red)}
+.sub-tab .count{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:18px;height:18px;border-radius:9px;font-size:.65rem;margin-left:4px;
+  background:rgba(255,255,255,.2);padding:0 4px;
+}
+.sub-tab:not(.active) .count{background:var(--bg);color:var(--text2)}
+
+.order-card{
+  background:var(--surface);border-radius:var(--radius);padding:16px;
+  box-shadow:var(--shadow);margin-bottom:12px;border-left:4px solid var(--border);
+}
+.order-card.status-new{border-left-color:var(--amber)}
+.order-card.status-accepted{border-left-color:var(--blue)}
+.order-card.status-progress{border-left-color:var(--purple)}
+.order-card.status-completed{border-left-color:var(--green)}
+.order-card.status-rejected{border-left-color:var(--red)}
+
+.oc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.oc-id{font-size:.78rem;font-weight:700;color:var(--text2)}
+.oc-patient{font-size:.95rem;font-weight:600;margin:2px 0}
+.oc-tests{font-size:.82rem;color:var(--text2);margin-bottom:8px}
+.oc-tests i{margin-right:4px;color:var(--red)}
+.oc-meta{display:flex;flex-wrap:wrap;gap:12px;font-size:.78rem;color:var(--text2);margin-bottom:12px}
+.oc-meta span{display:flex;align-items:center;gap:4px}
+.oc-meta i{font-size:.75rem}
+.oc-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn-sm{
+  padding:8px 16px;border-radius:8px;font-size:.78rem;font-weight:600;
+  transition:all .2s;
+}
+.btn-accept{background:var(--green);color:#fff}
+.btn-accept:hover{background:#047857}
+.btn-reject{background:var(--red-light);color:var(--red)}
+.btn-reject:hover{background:#FECACA}
+.btn-progress{background:var(--purple);color:#fff}
+.btn-progress:hover{background:#6D28D9}
+.btn-outline{background:none;border:1.5px solid var(--border);color:var(--text2)}
+.btn-outline:hover{border-color:var(--text2)}
+.btn-whatsapp{background:#25D366;color:#fff}
+.btn-whatsapp:hover{background:#1DA851}
+
+.progress-stages{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap}
+.stage{
+  padding:5px 10px;border-radius:6px;font-size:.68rem;font-weight:600;
+  background:var(--bg);color:var(--text3);border:1px solid var(--border);
+}
+.stage.done{background:var(--green-light);color:#065F46;border-color:#A7F3D0}
+.stage.current{background:var(--purple-light);color:#5B21B6;border-color:#C4B5FD;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+
+/* ===== MENU ===== */
+.search-bar{
+  display:flex;align-items:center;gap:10px;background:var(--surface);
+  border:1.5px solid var(--border);border-radius:var(--radius);padding:10px 14px;
+  margin-bottom:12px;
+}
+.search-bar i{color:var(--text3)}
+.search-bar input{flex:1;border:none;font-size:.9rem;background:transparent}
+.cat-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;-webkit-overflow-scrolling:touch}
+.cat-tabs::-webkit-scrollbar{display:none}
+.cat-tab{
+  padding:7px 14px;border-radius:20px;font-size:.75rem;font-weight:600;
+  white-space:nowrap;background:var(--surface);color:var(--text2);
+  border:1.5px solid var(--border);transition:all .2s;flex-shrink:0;
+}
+.cat-tab.active{background:var(--red);color:#fff;border-color:var(--red)}
+
+.menu-item{
+  background:var(--surface);border-radius:var(--radius);padding:14px;
+  box-shadow:var(--shadow);margin-bottom:10px;
+}
+.mi-top{display:flex;justify-content:space-between;align-items:flex-start}
+.mi-name{font-size:.92rem;font-weight:600}
+.mi-params{font-size:.72rem;color:var(--text2);margin-top:2px}
+.mi-toggle{margin-left:8px}
+.mi-pricing{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.mi-mrp{font-size:.82rem;color:var(--text3);text-decoration:line-through}
+.mi-price{font-size:1rem;font-weight:700;color:var(--green);cursor:pointer;display:flex;align-items:center;gap:4px}
+.mi-price i{font-size:.7rem;color:var(--text3)}
+.mi-offer{font-size:.72rem;font-weight:700;color:var(--red);background:var(--red-light);padding:2px 8px;border-radius:10px}
+.mi-price-input{
+  width:90px;padding:6px 8px;border:1.5px solid var(--red);border-radius:8px;
+  font-size:.95rem;font-weight:700;color:var(--green);text-align:center;
+}
+.mini-toggle{
+  width:40px;height:22px;border-radius:11px;background:var(--border2);
+  position:relative;cursor:pointer;transition:background .3s;flex-shrink:0;
+}
+.mini-toggle.on{background:var(--green)}
+.mini-toggle .mt-knob{
+  position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;
+  background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:transform .3s;
+}
+.mini-toggle.on .mt-knob{transform:translateX(18px)}
+
+.add-package-btn{
+  width:100%;padding:14px;background:var(--red-light);color:var(--red);
+  font-weight:700;border-radius:var(--radius);font-size:.9rem;margin-top:8px;
+  border:2px dashed var(--red);transition:background .2s;
+}
+.add-package-btn:hover{background:#FECACA}
+
+/* ===== STOREFRONT ===== */
+.preview-card{
+  background:var(--surface);border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow-md);margin-bottom:16px;
+}
+.preview-cover{
+  height:120px;background:linear-gradient(135deg,var(--red) 0%,#7F1D1D 100%);
+  display:flex;align-items:flex-end;padding:16px;position:relative;
+}
+.preview-cover .lab-avatar{
+  width:60px;height:60px;border-radius:14px;background:var(--surface);
+  display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--red);
+  box-shadow:var(--shadow-md);position:absolute;bottom:-20px;left:16px;
+}
+.preview-body{padding:30px 16px 16px}
+.preview-body h3{font-size:1.1rem}
+.preview-body .pv-tag{font-size:.8rem;color:var(--text2);margin-top:2px}
+.preview-body .pv-rating{margin-top:6px;font-size:.82rem;color:var(--amber)}
+.preview-body .pv-url{
+  margin-top:10px;padding:8px 12px;background:var(--bg);border-radius:8px;
+  font-size:.78rem;color:var(--blue);font-weight:600;display:flex;align-items:center;gap:6px;
+}
+.sf-field{margin-bottom:16px}
+.sf-field label{display:block;font-size:.78rem;font-weight:600;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px}
+.sf-input{
+  width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;
+  font-size:.9rem;background:var(--surface);transition:border .2s;
+}
+.sf-input:focus{border-color:var(--red)}
+.sf-textarea{resize:vertical;min-height:70px}
+.upload-zone{
+  border:2px dashed var(--border);border-radius:var(--radius);padding:24px;
+  text-align:center;color:var(--text3);font-size:.82rem;cursor:pointer;
+  transition:border-color .2s;
+}
+.upload-zone:hover{border-color:var(--red)}
+.upload-zone i{font-size:1.5rem;margin-bottom:6px;display:block}
+
+.plan-card{
+  background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border-radius:var(--radius);
+  padding:16px;margin-top:16px;border:1px solid #93C5FD;
+}
+.plan-card h4{font-size:.95rem;color:#1E40AF}
+.plan-card p{font-size:.8rem;color:#3B82F6;margin-top:4px}
+.plan-card .btn-upgrade{
+  margin-top:10px;padding:10px 20px;background:#3B82F6;color:#fff;
+  border-radius:8px;font-size:.82rem;font-weight:600;
+}
+
+/* ===== MORE ===== */
+.more-section{margin-bottom:20px}
+.more-section h4{font-size:.82rem;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;padding-left:4px}
+.more-item{
+  display:flex;align-items:center;gap:12px;padding:14px;background:var(--surface);
+  border-radius:var(--radius);margin-bottom:6px;box-shadow:var(--shadow);cursor:pointer;
+  transition:background .2s;
+}
+.more-item:hover{background:var(--bg)}
+.more-item .mi-icon{
+  width:38px;height:38px;border-radius:10px;display:flex;align-items:center;
+  justify-content:center;font-size:1rem;flex-shrink:0;
+}
+.more-item .mi-text{flex:1}
+.more-item .mi-text h5{font-size:.9rem;font-weight:600}
+.more-item .mi-text p{font-size:.75rem;color:var(--text2)}
+.more-item .mi-arrow{color:var(--text3);font-size:.8rem}
+
+.analytics-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+.ana-card{background:var(--surface);border-radius:var(--radius);padding:12px;text-align:center;box-shadow:var(--shadow)}
+.ana-card .ana-val{font-family:'Plus Jakarta Sans';font-size:1.2rem;font-weight:800}
+.ana-card .ana-label{font-size:.68rem;color:var(--text2);margin-top:2px}
+
+.logout-btn{
+  width:100%;padding:14px;background:var(--red-light);color:var(--red);
+  font-weight:700;border-radius:var(--radius);font-size:.9rem;margin-top:12px;
+}
+.logout-btn:hover{background:#FECACA}
+
+/* ===== MODAL / TOAST ===== */
+.toast{
+  position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);
+  background:var(--text);color:#fff;padding:12px 20px;border-radius:10px;
+  font-size:.85rem;font-weight:600;z-index:9999;transition:transform .4s;
+  box-shadow:var(--shadow-lg);
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ===== RESPONSIVE ===== */
+@media(min-width:768px){
+  .main-content{max-width:600px;margin:0 auto}
+  .bottom-nav{max-width:600px;left:50%;transform:translateX(-50%)}
+  .stats-grid{grid-template-columns:repeat(4,1fr)}
+  .analytics-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(min-width:1024px){
+  .main-content{max-width:800px}
+  .bottom-nav{max-width:800px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="loginScreen">
+  <div class="login-logo">
+    <i class="fa-solid fa-droplet"></i>
+    <span>hemato</span>
+  </div>
+  <div class="login-sub">Lab Partner</div>
+  <div class="login-card" id="loginCard">
+    <div id="phoneStep">
+      <h2>Welcome back</h2>
+      <p>Sign in to manage your lab on Hemato</p>
+      <div class="form-group">
+        <label>Mobile Number</label>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:.9rem;font-weight:600;color:var(--text2);padding:12px 0">+91</span>
+          <input type="tel" class="form-input" id="phoneInput" placeholder="Enter 10-digit number" maxlength="10" style="flex:1">
+        </div>
+      </div>
+      <button class="btn-primary" id="sendOtpBtn" onclick="sendOtp()">Send OTP</button>
+      <div class="login-footer" style="margin-top:16px">
+        New to Hemato? <a href="lab-onboard.html">Register your lab</a>
+      </div>
+    </div>
+    <div id="otpStep" class="hidden">
+      <h2>Verify OTP</h2>
+      <p>Enter the 6-digit code sent to <span id="otpPhone"></span></p>
+      <div class="otp-row" id="otpRow">
+        <input type="tel" class="otp-box" maxlength="1" data-idx="0">
+        <input type="tel" class="otp-box" maxlength="1" data-idx="1">
+        <input type="tel" class="otp-box" maxlength="1" data-idx="2">
+        <input type="tel" class="otp-box" maxlength="1" data-idx="3">
+        <input type="tel" class="otp-box" maxlength="1" data-idx="4">
+        <input type="tel" class="otp-box" maxlength="1" data-idx="5">
+      </div>
+      <div class="otp-timer">Resend OTP in <span id="otpTimer">30s</span></div>
+      <button class="btn-primary" id="verifyBtn" onclick="verifyOtp()">Verify & Login</button>
+      <div class="login-footer" style="margin-top:12px">
+        <a href="#" onclick="backToPhone();return false"><i class="fa-solid fa-arrow-left"></i> Change number</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== APP SHELL ===== -->
+<div id="appShell">
+  <!-- Top Header -->
+  <div class="top-header">
+    <div class="header-left">
+      <div class="header-logo">
+        <i class="fa-solid fa-droplet"></i>
+        <span>hemato</span>
+      </div>
+      <span class="header-lab">LifeCare Diagnostics</span>
+    </div>
+    <div class="header-right">
+      <button class="notif-btn"><i class="fa-solid fa-bell"></i><span class="notif-badge">3</span></button>
+      <button class="profile-btn">DR</button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+
+    <!-- ===== DASHBOARD TAB ===== -->
+    <div class="tab-content active" id="tabDashboard">
+      <div class="welcome-card">
+        <h2>Good morning, Dr. Ramesh!</h2>
+        <div class="date" id="todayDate"></div>
+        <div class="greeting">Your lab is performing great this week. Keep it up!</div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:var(--blue-light);color:var(--blue)"><i class="fa-solid fa-flask"></i></div>
+          <div class="stat-val">8</div>
+          <div class="stat-label">Today's Orders</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:var(--amber-light);color:var(--amber)"><i class="fa-solid fa-clock"></i></div>
+          <div class="stat-val">3</div>
+          <div class="stat-label">Pending</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:var(--green-light);color:var(--green)"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+          <div class="stat-val">&#8377;4,250</div>
+          <div class="stat-label">Revenue Today</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:var(--amber-light);color:var(--amber)"><i class="fa-solid fa-star"></i></div>
+          <div class="stat-val">4.6</div>
+          <div class="stat-label">Rating</div>
+        </div>
+      </div>
+
+      <div class="toggle-card">
+        <div class="toggle-info">
+          <h4>Accept Orders</h4>
+          <p id="toggleStatus">You are <strong style="color:var(--green)">Online</strong></p>
+        </div>
+        <div class="toggle-switch on" id="onlineToggle" onclick="toggleOnline()">
+          <div class="toggle-knob"></div>
+        </div>
+      </div>
+
+      <div class="chart-section">
+        <h4><i class="fa-solid fa-chart-simple" style="color:var(--red);margin-right:6px"></i>Weekly Orders</h4>
+        <div class="bar-chart" id="weeklyChart"></div>
+      </div>
+
+      <div class="section-title">
+        <h3>Recent Orders</h3>
+        <a href="#" onclick="switchTab('orders');return false">View All</a>
+      </div>
+      <div id="recentOrders"></div>
+    </div>
+
+    <!-- ===== ORDERS TAB ===== -->
+    <div class="tab-content" id="tabOrders">
+      <h3 style="margin-bottom:12px">Orders</h3>
+      <div class="sub-tabs" id="orderSubTabs"></div>
+      <div id="ordersList"></div>
+    </div>
+
+    <!-- ===== MENU TAB ===== -->
+    <div class="tab-content" id="tabMenu">
+      <h3 style="margin-bottom:12px">Test Catalog</h3>
+      <div class="search-bar">
+        <i class="fa-solid fa-search"></i>
+        <input type="text" placeholder="Search tests..." id="menuSearch" oninput="filterMenu()">
+      </div>
+      <div class="cat-tabs" id="catTabs"></div>
+      <div id="menuList"></div>
+      <button class="add-package-btn" onclick="showToast('Custom package builder coming soon!')">
+        <i class="fa-solid fa-plus"></i> Add Custom Package
+      </button>
+    </div>
+
+    <!-- ===== STOREFRONT TAB ===== -->
+    <div class="tab-content" id="tabStorefront">
+      <h3 style="margin-bottom:12px">Your Storefront</h3>
+      <div class="preview-card">
+        <div class="preview-cover">
+          <div class="lab-avatar"><i class="fa-solid fa-flask-vial"></i></div>
+        </div>
+        <div class="preview-body">
+          <h3>LifeCare Diagnostics</h3>
+          <div class="pv-tag">NABL Accredited | ISO 15189 Certified</div>
+          <div class="pv-rating"><i class="fa-solid fa-star"></i> 4.6 (238 reviews)</div>
+          <div class="pv-url"><i class="fa-solid fa-globe"></i> lifecare.medihost.in</div>
+        </div>
+      </div>
+
+      <div class="sf-field">
+        <label>Lab Display Name</label>
+        <input class="sf-input" value="LifeCare Diagnostics" id="sfName">
+      </div>
+      <div class="sf-field">
+        <label>Tagline / Description</label>
+        <textarea class="sf-input sf-textarea" id="sfTagline">NABL Accredited diagnostic center offering 500+ tests with free home collection. Trusted by 10,000+ patients.</textarea>
+      </div>
+      <div class="sf-field">
+        <label>Operating Hours</label>
+        <input class="sf-input" value="Mon-Sat: 7:00 AM - 9:00 PM | Sun: 8:00 AM - 2:00 PM" id="sfHours">
+      </div>
+      <div class="sf-field">
+        <label>Address</label>
+        <textarea class="sf-input sf-textarea" id="sfAddress">42, MG Road, Near City Hospital, Jayanagar, Bangalore - 560041</textarea>
+      </div>
+      <div class="sf-field">
+        <label>Lab Logo</label>
+        <div class="upload-zone" onclick="showToast('Logo upload — coming with API integration')">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          Click to upload logo (PNG, JPG — max 2MB)
+        </div>
+      </div>
+      <div class="sf-field">
+        <label>Cover Image</label>
+        <div class="upload-zone" onclick="showToast('Cover upload — coming with API integration')">
+          <i class="fa-solid fa-image"></i>
+          Click to upload cover image (1200x400 recommended)
+        </div>
+      </div>
+      <div class="sf-field">
+        <label>Contact Number</label>
+        <input class="sf-input" value="+91 98765 43210" id="sfPhone">
+      </div>
+      <div class="sf-field">
+        <label>Home Collection</label>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="mini-toggle on" onclick="this.classList.toggle('on')"><div class="mt-knob"></div></div>
+          <span style="font-size:.85rem;font-weight:500;color:var(--green)">Enabled — patients can book home collection</span>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="showToast('Storefront changes saved!')" style="margin-top:8px">
+        <i class="fa-solid fa-check"></i> Save Changes
+      </button>
+      <a href="https://lifecare.medihost.in" target="_blank" style="display:block;text-align:center;margin-top:12px;color:var(--red);font-weight:600;font-size:.88rem;text-decoration:none">
+        <i class="fa-solid fa-external-link-alt"></i> View Live Storefront
+      </a>
+
+      <div class="plan-card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <span class="badge badge-accepted">Starter Plan</span>
+        </div>
+        <h4>You're on the Starter Plan</h4>
+        <p>Your lab is live at <strong>lifecare.medihost.in</strong>. Upgrade to connect your own domain (e.g., lifecarediagnostics.com).</p>
+        <button class="btn-upgrade"><i class="fa-solid fa-rocket"></i> Upgrade Plan</button>
+      </div>
+    </div>
+
+    <!-- ===== MORE TAB ===== -->
+    <div class="tab-content" id="tabMore">
+      <h3 style="margin-bottom:16px">More</h3>
+
+      <div class="analytics-grid">
+        <div class="ana-card">
+          <div class="ana-val">347</div>
+          <div class="ana-label">Total Orders</div>
+        </div>
+        <div class="ana-card">
+          <div class="ana-val">&#8377;1.2L</div>
+          <div class="ana-label">Total Revenue</div>
+        </div>
+        <div class="ana-card">
+          <div class="ana-val">4.6 <i class="fa-solid fa-star" style="font-size:.7rem;color:var(--amber)"></i></div>
+          <div class="ana-label">Avg Rating</div>
+        </div>
+      </div>
+
+      <div class="more-section">
+        <h4>Account</h4>
+        <div class="more-item" onclick="showToast('Profile settings — coming soon')">
+          <div class="mi-icon" style="background:var(--blue-light);color:var(--blue)"><i class="fa-solid fa-user"></i></div>
+          <div class="mi-text"><h5>Profile & Settings</h5><p>Dr. Ramesh — +91 98765 43210</p></div>
+          <i class="fa-solid fa-chevron-right mi-arrow"></i>
+        </div>
+        <div class="more-item" onclick="showToast('Bank details — coming soon')">
+          <div class="mi-icon" style="background:var(--green-light);color:var(--green)"><i class="fa-solid fa-building-columns"></i></div>
+          <div class="mi-text"><h5>Bank Details</h5><p>HDFC Bank ****4521</p></div>
+          <i class="fa-solid fa-chevron-right mi-arrow"></i>
+        </div>
+      </div>
+
+      <div class="more-section">
+        <h4>Business</h4>
+        <div class="more-item" onclick="showToast('Full analytics dashboard — coming soon')">
+          <div class="mi-icon" style="background:var(--purple-light);color:var(--purple)"><i class="fa-solid fa-chart-pie"></i></div>
+          <div class="mi-text"><h5>Reports & Analytics</h5><p>Revenue, orders, trends</p></div>
+          <i class="fa-solid fa-chevron-right mi-arrow"></i>
+        </div>
+        <div class="more-item" onclick="showToast('Documents section — coming soon')">
+          <div class="mi-icon" style="background:var(--amber-light);color:var(--amber)"><i class="fa-solid fa-file-certificate"></i></div>
+          <div class="mi-text"><h5>Documents</h5><p>NABL Certificate, Trade License</p></div>
+          <i class="fa-solid fa-chevron-right mi-arrow"></i>
+        </div>
+      </div>
+
+      <div class="more-section">
+        <h4>Support</h4>
+        <div class="more-item" onclick="window.open('https://wa.me/919876543210','_blank')">
+          <div class="mi-icon" style="background:#DCFCE7;color:#16A34A"><i class="fa-brands fa-whatsapp"></i></div>
+          <div class="mi-text"><h5>Help & Support</h5><p>Chat with us on WhatsApp</p></div>
+          <i class="fa-solid fa-chevron-right mi-arrow"></i>
+        </div>
+      </div>
+
+      <button class="logout-btn" onclick="logout()">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </button>
+    </div>
+
+  </div><!-- /main-content -->
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <button class="nav-tab active" data-tab="dashboard" onclick="switchTab('dashboard')">
+      <i class="fa-solid fa-grid-2"></i>Dashboard
+    </button>
+    <button class="nav-tab" data-tab="orders" onclick="switchTab('orders')">
+      <i class="fa-solid fa-clipboard-list"></i>Orders
+    </button>
+    <button class="nav-tab" data-tab="menu" onclick="switchTab('menu')">
+      <i class="fa-solid fa-vial"></i>Menu
+    </button>
+    <button class="nav-tab" data-tab="storefront" onclick="switchTab('storefront')">
+      <i class="fa-solid fa-store"></i>Storefront
+    </button>
+    <button class="nav-tab" data-tab="more" onclick="switchTab('more')">
+      <i class="fa-solid fa-ellipsis"></i>More
+    </button>
+  </nav>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== MOCK DATA =====
+
+const LAB = {
+  name: 'LifeCare Diagnostics',
+  owner: 'Dr. Ramesh',
+  subdomain: 'lifecare',
+  phone: '9876543210',
+  rating: 4.6,
+};
+
+// TODO: Replace with API call — GET /api/partner/orders
+const ORDERS = [
+  { id:'HMT-0042', patient:'Ra***sh K', tests:['CBC','Thyroid Profile'], phlebo:'Sunil M', phleboPhone:'9988776655', time:'10:30 AM', amount:899, status:'new' },
+  { id:'HMT-0041', patient:'Pr***ya S', tests:['Vitamin D','B12'], phlebo:'Ajay R', phleboPhone:'9876541230', time:'11:00 AM', amount:1250, status:'new' },
+  { id:'HMT-0040', patient:'Am***ta G', tests:['HbA1c','Fasting Sugar'], phlebo:'Ravi K', phleboPhone:'9123456780', time:'9:45 AM', amount:650, status:'new' },
+  { id:'HMT-0039', patient:'Vi***sh P', tests:['Lipid Profile'], phlebo:'Sunil M', phleboPhone:'9988776655', time:'9:00 AM', amount:499, status:'accepted' },
+  { id:'HMT-0038', patient:'Ne***a D', tests:['CBC','ESR','CRP'], phlebo:'Ajay R', phleboPhone:'9876541230', time:'8:30 AM', amount:780, status:'accepted' },
+  { id:'HMT-0037', patient:'Su***sh R', tests:['Full Body Checkup'], phlebo:'Ravi K', phleboPhone:'9123456780', time:'8:00 AM', amount:2499, status:'progress', stage:2 },
+  { id:'HMT-0036', patient:'Ka***ni M', tests:['Thyroid Profile','Iron Studies'], phlebo:'Sunil M', phleboPhone:'9988776655', time:'Yesterday 4:00 PM', amount:1100, status:'progress', stage:1 },
+  { id:'HMT-0035', patient:'An***sh J', tests:['Liver Function Test'], phlebo:'Ajay R', phleboPhone:'9876541230', time:'Yesterday 2:30 PM', amount:550, status:'progress', stage:3 },
+  { id:'HMT-0034', patient:'De***ka B', tests:['Kidney Function Test'], phlebo:'Ravi K', phleboPhone:'9123456780', time:'Yesterday 11:00 AM', amount:620, status:'progress', stage:0 },
+  { id:'HMT-0033', patient:'Ra***ni V', tests:['CBC','Urine Routine'], phlebo:'Sunil M', phleboPhone:'9988776655', time:'Apr 3, 10:00 AM', amount:450, status:'completed' },
+  { id:'HMT-0032', patient:'Ma***sh T', tests:['Vitamin D','Calcium'], phlebo:'Ajay R', phleboPhone:'9876541230', time:'Apr 3, 9:00 AM', amount:850, status:'completed' },
+  { id:'HMT-0031', patient:'Sh***la K', tests:['Thyroid Profile'], phlebo:'Ravi K', phleboPhone:'9123456780', time:'Apr 2, 3:00 PM', amount:399, status:'completed' },
+  { id:'HMT-0030', patient:'Vi***ay S', tests:['HbA1c','Lipid Profile','CBC'], phlebo:'Sunil M', phleboPhone:'9988776655', time:'Apr 2, 11:30 AM', amount:1350, status:'completed' },
+  { id:'HMT-0029', patient:'Go***nd R', tests:['Full Body Checkup'], phlebo:'Ajay R', phleboPhone:'9876541230', time:'Apr 1, 9:00 AM', amount:2499, status:'completed' },
+];
+
+const STAGES = ['Sample Received','Accessioning','Processing','Report Ready'];
+
+// TODO: Replace with API call — GET /api/partner/tests
+const TESTS = [
+  { name:'Complete Blood Count (CBC)', params:24, mrp:500, price:299, cat:'Hematology', active:true },
+  { name:'Erythrocyte Sedimentation Rate (ESR)', params:1, mrp:200, price:120, cat:'Hematology', active:true },
+  { name:'Peripheral Blood Smear', params:8, mrp:400, price:280, cat:'Hematology', active:true },
+  { name:'Coagulation Profile', params:4, mrp:900, price:599, cat:'Hematology', active:false },
+  { name:'Fasting Blood Sugar', params:1, mrp:150, price:89, cat:'Diabetes', active:true },
+  { name:'HbA1c (Glycated Hemoglobin)', params:1, mrp:600, price:349, cat:'Diabetes', active:true },
+  { name:'Post Prandial Blood Sugar', params:1, mrp:150, price:99, cat:'Diabetes', active:true },
+  { name:'Thyroid Profile (T3, T4, TSH)', params:3, mrp:800, price:399, cat:'Thyroid', active:true },
+  { name:'Free T3 & Free T4', params:2, mrp:600, price:350, cat:'Thyroid', active:true },
+  { name:'Lipid Profile', params:7, mrp:700, price:399, cat:'Biochemistry', active:true },
+  { name:'Liver Function Test (LFT)', params:12, mrp:800, price:449, cat:'Biochemistry', active:true },
+  { name:'Kidney Function Test (KFT)', params:8, mrp:700, price:399, cat:'Biochemistry', active:true },
+  { name:'Serum Electrolytes', params:3, mrp:500, price:299, cat:'Biochemistry', active:true },
+  { name:'Uric Acid', params:1, mrp:200, price:120, cat:'Biochemistry', active:true },
+  { name:'Vitamin D (25-OH)', params:1, mrp:1200, price:599, cat:'Biochemistry', active:true },
+  { name:'Vitamin B12', params:1, mrp:900, price:499, cat:'Biochemistry', active:true },
+  { name:'Iron Studies', params:4, mrp:800, price:450, cat:'Biochemistry', active:true },
+  { name:'Troponin I', params:1, mrp:1500, price:899, cat:'Cardiac', active:true },
+  { name:'BNP (Brain Natriuretic Peptide)', params:1, mrp:2000, price:1299, cat:'Cardiac', active:false },
+  { name:'CRP (C-Reactive Protein)', params:1, mrp:600, price:350, cat:'Cardiac', active:true },
+  { name:'Hemato Full Body Checkup', params:72, mrp:4999, price:2499, cat:'Full Body', active:true },
+  { name:'Hemato Wellness Basic', params:45, mrp:2999, price:1499, cat:'Full Body', active:true },
+  { name:'Hemato Senior Citizen Package', params:85, mrp:6999, price:3999, cat:'Full Body', active:true },
+  { name:'Women\'s Health Package', params:60, mrp:5499, price:2999, cat:'Custom Packages', active:true },
+  { name:'Diabetes Screening Panel', params:8, mrp:1800, price:999, cat:'Custom Packages', active:true },
+];
+
+const WEEKLY = [
+  { day:'Mon', val:12 },{ day:'Tue', val:9 },{ day:'Wed', val:15 },
+  { day:'Thu', val:11 },{ day:'Fri', val:8 },{ day:'Sat', val:14 },{ day:'Sun', val:6 },
+];
+
+// ===== LOGIN FLOW =====
+let otpTimerInterval;
+
+function sendOtp(){
+  const phone = document.getElementById('phoneInput').value.trim();
+  if(phone.length !== 10 || !/^\d+$/.test(phone)){
+    showToast('Enter a valid 10-digit mobile number');
+    return;
+  }
+  // TODO: Replace with API call — POST /api/auth/send-otp
+  document.getElementById('otpPhone').textContent = '+91 ' + phone.substring(0,2) + '****' + phone.substring(6);
+  document.getElementById('phoneStep').classList.add('hidden');
+  document.getElementById('otpStep').classList.remove('hidden');
+  startOtpTimer();
+  setTimeout(()=>document.querySelector('.otp-box').focus(),200);
+}
+
+function startOtpTimer(){
+  let sec=30;
+  const el=document.getElementById('otpTimer');
+  clearInterval(otpTimerInterval);
+  otpTimerInterval=setInterval(()=>{
+    sec--;
+    el.textContent=sec+'s';
+    if(sec<=0){clearInterval(otpTimerInterval);el.innerHTML='<a href="#" onclick="startOtpTimer();return false" style="color:var(--red);font-weight:600">Resend OTP</a>'}
+  },1000);
+}
+
+function verifyOtp(){
+  const boxes=document.querySelectorAll('.otp-box');
+  let otp='';
+  boxes.forEach(b=>otp+=b.value);
+  if(otp.length!==6){showToast('Enter all 6 digits');return}
+  // TODO: Replace with API call — POST /api/auth/verify-otp
+  // Mock: any 6-digit OTP works
+  clearInterval(otpTimerInterval);
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('appShell').style.display='flex';
+  initDashboard();
+}
+
+function backToPhone(){
+  document.getElementById('phoneStep').classList.remove('hidden');
+  document.getElementById('otpStep').classList.add('hidden');
+  clearInterval(otpTimerInterval);
+}
+
+// OTP auto-advance
+document.querySelectorAll('.otp-box').forEach((box,i,all)=>{
+  box.addEventListener('input',e=>{
+    if(e.target.value && i<5) all[i+1].focus();
+  });
+  box.addEventListener('keydown',e=>{
+    if(e.key==='Backspace' && !e.target.value && i>0) all[i-1].focus();
+  });
+});
+
+function logout(){
+  document.getElementById('appShell').style.display='none';
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('phoneStep').classList.remove('hidden');
+  document.getElementById('otpStep').classList.add('hidden');
+  document.getElementById('phoneInput').value='';
+  document.querySelectorAll('.otp-box').forEach(b=>b.value='');
+}
+
+// ===== TAB SWITCHING =====
+function switchTab(tab){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(n=>n.classList.remove('active'));
+  const tabId = 'tab' + tab.charAt(0).toUpperCase() + tab.slice(1);
+  document.getElementById(tabId).classList.add('active');
+  document.querySelector(`.nav-tab[data-tab="${tab}"]`).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  if(tab==='orders') renderOrders();
+  if(tab==='menu') renderMenu();
+}
+
+// ===== ONLINE/OFFLINE TOGGLE =====
+let isOnline = true;
+function toggleOnline(){
+  isOnline = !isOnline;
+  const el = document.getElementById('onlineToggle');
+  const st = document.getElementById('toggleStatus');
+  if(isOnline){
+    el.classList.add('on');
+    st.innerHTML='You are <strong style="color:var(--green)">Online</strong>';
+    showToast('You are now accepting orders');
+  } else {
+    el.classList.remove('on');
+    st.innerHTML='You are <strong style="color:var(--red)">Offline</strong>';
+    showToast('You are now offline — no new orders');
+  }
+}
+
+// ===== DASHBOARD =====
+function initDashboard(){
+  // Date
+  const now = new Date();
+  const opts = {weekday:'long',year:'numeric',month:'long',day:'numeric'};
+  document.getElementById('todayDate').textContent = now.toLocaleDateString('en-IN',opts);
+
+  // Weekly chart
+  const maxVal = Math.max(...WEEKLY.map(w=>w.val));
+  const chartHtml = WEEKLY.map(w=>{
+    const h = Math.round((w.val/maxVal)*80);
+    return `<div class="bar-col"><div class="bar-val">${w.val}</div><div class="bar" style="height:${h}px"></div><div class="bar-label">${w.day}</div></div>`;
+  }).join('');
+  document.getElementById('weeklyChart').innerHTML = chartHtml;
+
+  // Recent orders (top 5)
+  renderRecentOrders();
+  renderOrderSubTabs();
+  renderCategoryTabs();
+}
+
+function renderRecentOrders(){
+  const recent = ORDERS.slice(0,5);
+  const statusMap = {new:'badge-new',accepted:'badge-accepted',progress:'badge-progress',completed:'badge-completed',rejected:'badge-rejected'};
+  const labelMap = {new:'New',accepted:'Accepted',progress:'In Progress',completed:'Completed',rejected:'Rejected'};
+  document.getElementById('recentOrders').innerHTML = recent.map(o=>`
+    <div class="recent-order">
+      <div class="ro-left">
+        <div class="ro-id">#${o.id}</div>
+        <div class="ro-tests">${o.tests.join(', ')}</div>
+        <div class="ro-time"><i class="fa-regular fa-clock"></i> ${o.time}</div>
+      </div>
+      <div class="ro-right">
+        <div class="ro-amount">&#8377;${o.amount.toLocaleString('en-IN')}</div>
+        <span class="badge ${statusMap[o.status]}">${labelMap[o.status]}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== ORDERS TAB =====
+let activeOrderFilter = 'all';
+const ORDER_FILTERS = [
+  {key:'new',label:'New'},
+  {key:'accepted',label:'Accepted'},
+  {key:'progress',label:'In Progress'},
+  {key:'completed',label:'Completed'},
+  {key:'all',label:'All'},
+];
+
+function renderOrderSubTabs(){
+  const counts = {};
+  ORDER_FILTERS.forEach(f=>counts[f.key]=0);
+  ORDERS.forEach(o=>{counts[o.status]++;counts.all++});
+  document.getElementById('orderSubTabs').innerHTML = ORDER_FILTERS.map(f=>`
+    <button class="sub-tab ${f.key===activeOrderFilter?'active':''}" onclick="setOrderFilter('${f.key}')">
+      ${f.label}<span class="count">${counts[f.key]}</span>
+    </button>
+  `).join('');
+}
+
+function setOrderFilter(key){
+  activeOrderFilter=key;
+  renderOrderSubTabs();
+  renderOrders();
+}
+
+function renderOrders(){
+  const filtered = activeOrderFilter==='all' ? ORDERS : ORDERS.filter(o=>o.status===activeOrderFilter);
+  if(!filtered.length){
+    document.getElementById('ordersList').innerHTML='<div style="text-align:center;padding:40px 0;color:var(--text3)"><i class="fa-solid fa-inbox" style="font-size:2rem;margin-bottom:8px;display:block"></i>No orders in this category</div>';
+    return;
+  }
+  document.getElementById('ordersList').innerHTML = filtered.map((o,i)=>{
+    let actions='';
+    let stagesHtml='';
+    const oi = ORDERS.indexOf(o); // real index
+
+    if(o.status==='new'){
+      actions=`<button class="btn-sm btn-accept" onclick="acceptOrder(${oi})"><i class="fa-solid fa-check"></i> Accept</button>
+               <button class="btn-sm btn-reject" onclick="rejectOrder(${oi})"><i class="fa-solid fa-xmark"></i> Reject</button>`;
+    } else if(o.status==='accepted'){
+      actions=`<div style="font-size:.78rem;color:var(--blue);font-weight:600"><i class="fa-solid fa-motorcycle"></i> Phlebo En Route</div>`;
+    } else if(o.status==='progress'){
+      stagesHtml='<div class="progress-stages">'+STAGES.map((s,si)=>{
+        let cls='stage';
+        if(si<o.stage) cls+=' done';
+        else if(si===o.stage) cls+=' current';
+        return `<div class="${cls}">${s}</div>`;
+      }).join('')+'</div>';
+      if(o.stage<STAGES.length-1){
+        actions=`<button class="btn-sm btn-progress" onclick="advanceStage(${oi})"><i class="fa-solid fa-arrow-right"></i> ${STAGES[o.stage+1]}</button>`;
+      } else {
+        actions=`<button class="btn-sm btn-accept" onclick="completeOrder(${oi})"><i class="fa-solid fa-check-double"></i> Mark Completed</button>`;
+      }
+    } else if(o.status==='completed'){
+      actions=`<button class="btn-sm btn-outline"><i class="fa-solid fa-file-lines"></i> View Report</button>
+               <button class="btn-sm btn-whatsapp" onclick="showToast('Report sent via WhatsApp!')"><i class="fa-brands fa-whatsapp"></i> Send</button>`;
+    }
+
+    const statusMap = {new:'status-new',accepted:'status-accepted',progress:'status-progress',completed:'status-completed',rejected:'status-rejected'};
+    const labelMap = {new:'New',accepted:'Accepted',progress:'In Progress',completed:'Completed',rejected:'Rejected'};
+    const badgeMap = {new:'badge-new',accepted:'badge-accepted',progress:'badge-progress',completed:'badge-completed',rejected:'badge-rejected'};
+
+    return `<div class="order-card ${statusMap[o.status]}">
+      <div class="oc-header">
+        <div>
+          <div class="oc-id">#${o.id}</div>
+          <div class="oc-patient">${o.patient}</div>
+        </div>
+        <span class="badge ${badgeMap[o.status]}">${labelMap[o.status]}</span>
+      </div>
+      <div class="oc-tests"><i class="fa-solid fa-vial"></i> ${o.tests.join(', ')}</div>
+      <div class="oc-meta">
+        <span><i class="fa-solid fa-user-nurse"></i> ${o.phlebo}</span>
+        <span><i class="fa-solid fa-phone"></i> ${o.phleboPhone}</span>
+        <span><i class="fa-regular fa-clock"></i> ${o.time}</span>
+        <span><i class="fa-solid fa-indian-rupee-sign"></i> ${o.amount.toLocaleString('en-IN')}</span>
+      </div>
+      ${stagesHtml}
+      <div class="oc-actions">${actions}</div>
+    </div>`;
+  }).join('');
+}
+
+// TODO: Replace with API call — POST /api/partner/orders/:id/accept
+function acceptOrder(i){
+  ORDERS[i].status='accepted';
+  showToast('Order #'+ORDERS[i].id+' accepted!');
+  renderOrders();
+  renderOrderSubTabs();
+  renderRecentOrders();
+}
+
+// TODO: Replace with API call — POST /api/partner/orders/:id/reject
+function rejectOrder(i){
+  ORDERS[i].status='rejected';
+  showToast('Order #'+ORDERS[i].id+' rejected');
+  renderOrders();
+  renderOrderSubTabs();
+  renderRecentOrders();
+}
+
+// TODO: Replace with API call — POST /api/partner/orders/:id/advance-stage
+function advanceStage(i){
+  ORDERS[i].stage++;
+  showToast('Stage updated: '+STAGES[ORDERS[i].stage]);
+  renderOrders();
+}
+
+// TODO: Replace with API call — POST /api/partner/orders/:id/complete
+function completeOrder(i){
+  ORDERS[i].status='completed';
+  showToast('Order #'+ORDERS[i].id+' completed!');
+  renderOrders();
+  renderOrderSubTabs();
+  renderRecentOrders();
+}
+
+// ===== MENU TAB =====
+let activeCat = 'All';
+const CATEGORIES = ['All','Hematology','Biochemistry','Thyroid','Diabetes','Cardiac','Full Body','Custom Packages'];
+
+function renderCategoryTabs(){
+  document.getElementById('catTabs').innerHTML = CATEGORIES.map(c=>
+    `<button class="cat-tab ${c===activeCat?'active':''}" onclick="setCat('${c}')">${c}</button>`
+  ).join('');
+}
+
+function setCat(c){
+  activeCat=c;
+  renderCategoryTabs();
+  renderMenu();
+}
+
+function renderMenu(){
+  const search = (document.getElementById('menuSearch').value||'').toLowerCase();
+  let filtered = TESTS;
+  if(activeCat!=='All') filtered=filtered.filter(t=>t.cat===activeCat);
+  if(search) filtered=filtered.filter(t=>t.name.toLowerCase().includes(search));
+
+  document.getElementById('menuList').innerHTML = filtered.map((t,i)=>{
+    const realIdx = TESTS.indexOf(t);
+    const off = Math.round((1-t.price/t.mrp)*100);
+    return `<div class="menu-item" id="mi-${realIdx}">
+      <div class="mi-top">
+        <div style="flex:1">
+          <div class="mi-name">${t.name}</div>
+          <div class="mi-params">${t.params} parameter${t.params>1?'s':''} &middot; ${t.cat}</div>
+        </div>
+        <div class="mini-toggle mi-toggle ${t.active?'on':''}" onclick="toggleTest(${realIdx})"><div class="mt-knob"></div></div>
+      </div>
+      <div class="mi-pricing">
+        <span class="mi-mrp">&#8377;${t.mrp.toLocaleString('en-IN')}</span>
+        <span class="mi-price" onclick="editPrice(${realIdx})" id="price-${realIdx}" title="Click to edit">
+          &#8377;${t.price.toLocaleString('en-IN')} <i class="fa-solid fa-pen"></i>
+        </span>
+        <span class="mi-offer">${off}% off</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterMenu(){renderMenu()}
+
+// TODO: Replace with API call — PUT /api/partner/tests/:id/toggle
+function toggleTest(i){
+  TESTS[i].active=!TESTS[i].active;
+  showToast(TESTS[i].name+(TESTS[i].active?' enabled':' disabled'));
+  renderMenu();
+}
+
+// TODO: Replace with API call — PUT /api/partner/tests/:id/price
+function editPrice(i){
+  const el = document.getElementById('price-'+i);
+  el.innerHTML=`<input type="number" class="mi-price-input" value="${TESTS[i].price}" onblur="savePrice(${i},this)" onkeydown="if(event.key==='Enter')this.blur()" autofocus>`;
+  el.querySelector('input').focus();
+  el.onclick=null;
+}
+
+function savePrice(i,inp){
+  const val=parseInt(inp.value);
+  if(val>0 && val<=TESTS[i].mrp){
+    TESTS[i].price=val;
+    showToast('Price updated to ₹'+val);
+  } else if(val>TESTS[i].mrp){
+    showToast('Price cannot exceed MRP');
+  }
+  renderMenu();
+}
+
+// ===== TOAST =====
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ===== INIT =====
+// Don't auto-init dashboard — wait for login
+</script>
+</body>
+</html>

@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phlebotomist Onboarding — Hemato</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #E8253A;
+  --red-dark: #B01C2C;
+  --red-glow: rgba(232,37,58,0.18);
+  --dark: #0C0D0F;
+  --dark2: #131518;
+  --dark3: #1A1D21;
+  --dark4: #22262C;
+  --border: rgba(255,255,255,0.07);
+  --text: #F0F1F3;
+  --muted: #8A8F99;
+  --light: #FFFFFF;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--dark);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+
+h1,h2,h3,h4{font-family:'Syne',sans-serif;}
+a{color:inherit;text-decoration:none;}
+button{cursor:pointer;border:none;outline:none;}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  padding:0 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  height:72px;
+  background:rgba(12,13,15,0.95);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  display:flex;align-items:center;gap:12px;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;
+  letter-spacing:-0.02em;
+}
+.logo-drop{
+  width:36px;height:36px;
+  background:var(--red);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:800;color:#fff;
+  box-shadow:0 0 20px var(--red-glow);
+}
+.nav-back{
+  color:var(--muted);
+  font-size:0.9rem;
+  font-weight:500;
+  transition:color 0.2s;
+}
+.nav-back:hover{color:var(--text);}
+
+/* MAIN WRAPPER */
+.wizard-wrapper{
+  padding:100px 5% 80px;
+  max-width:700px;
+  margin:0 auto;
+}
+
+/* PROGRESS STEPPER */
+.stepper{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  margin-bottom:40px;
+  position:relative;
+}
+.stepper::before{
+  content:'';
+  position:absolute;
+  top:20px;
+  left:28px;
+  right:28px;
+  height:2px;
+  background:var(--border);
+  z-index:0;
+}
+.step-item{
+  display:flex;flex-direction:column;align-items:center;
+  position:relative;z-index:1;
+  flex:1;
+}
+.step-circle{
+  width:40px;height:40px;
+  border-radius:50%;
+  background:var(--dark3);
+  border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;
+  color:var(--muted);
+  transition:all 0.3s;
+  margin-bottom:8px;
+}
+.step-item.active .step-circle{
+  background:var(--red);
+  border-color:var(--red);
+  color:#fff;
+  box-shadow:0 0 20px var(--red-glow);
+}
+.step-item.completed .step-circle{
+  background:var(--red-dark);
+  border-color:var(--red-dark);
+  color:#fff;
+}
+.step-label{
+  font-size:0.7rem;
+  color:var(--muted);
+  text-align:center;
+  font-weight:500;
+  letter-spacing:0.02em;
+  max-width:80px;
+}
+.step-item.active .step-label{color:var(--text);}
+.step-item.completed .step-label{color:var(--red);}
+
+/* FORM CARD */
+.form-card{
+  background:var(--dark2);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:36px 30px;
+}
+.step-title{
+  font-size:1.3rem;
+  font-weight:800;
+  margin-bottom:4px;
+}
+.step-subtitle{
+  font-size:0.88rem;
+  color:var(--muted);
+  margin-bottom:28px;
+}
+
+/* FORM FIELDS */
+.form-group{margin-bottom:20px;}
+.form-group label{
+  display:block;font-size:0.82rem;font-weight:600;
+  letter-spacing:0.04em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:8px;
+}
+.form-group label .req{color:var(--red);margin-left:2px;}
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="date"],
+.form-group input[type="number"],
+.form-group select,
+.form-group textarea{
+  width:100%;
+  background:var(--dark3);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px 16px;
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:0.95rem;
+  transition:border-color 0.2s;
+  outline:none;
+}
+.form-group textarea{
+  resize:vertical;
+  min-height:80px;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{border-color:rgba(232,37,58,0.5);}
+.form-group select option{background:var(--dark3);}
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error{border-color:var(--red);}
+.error-msg{
+  font-size:0.75rem;
+  color:var(--red);
+  margin-top:4px;
+  display:none;
+}
+.form-group.has-error .error-msg{display:block;}
+
+/* FILE UPLOAD */
+.file-upload{
+  position:relative;
+  border:2px dashed var(--border);
+  border-radius:12px;
+  padding:24px 16px;
+  text-align:center;
+  cursor:pointer;
+  transition:all 0.25s;
+  background:var(--dark3);
+}
+.file-upload:hover{
+  border-color:rgba(232,37,58,0.4);
+  background:rgba(232,37,58,0.03);
+}
+.file-upload.has-file{
+  border-color:rgba(232,37,58,0.3);
+  border-style:solid;
+}
+.file-upload input[type="file"]{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  cursor:pointer;
+}
+.file-upload-icon{
+  font-size:1.8rem;
+  margin-bottom:8px;
+  display:block;
+}
+.file-upload-text{
+  font-size:0.82rem;
+  color:var(--muted);
+}
+.file-upload-text strong{color:var(--red);}
+.file-name{
+  font-size:0.8rem;
+  color:var(--red);
+  margin-top:6px;
+  display:none;
+  word-break:break-all;
+}
+.file-upload.has-file .file-name{display:block;}
+
+/* PHOTO PREVIEW */
+.photo-preview{
+  width:80px;height:80px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid var(--red);
+  margin:12px auto 0;
+  display:none;
+}
+.photo-preview.visible{display:block;}
+
+/* CHECKBOX / RADIO GROUPS */
+.check-group{
+  display:flex;flex-wrap:wrap;gap:10px;
+}
+.check-item{
+  position:relative;
+}
+.check-item input{
+  position:absolute;opacity:0;pointer-events:none;
+}
+.check-item label{
+  display:inline-block;
+  padding:8px 16px;
+  background:var(--dark3);
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-size:0.82rem;
+  color:var(--muted);
+  cursor:pointer;
+  transition:all 0.2s;
+  text-transform:none;
+  letter-spacing:0;
+  font-weight:400;
+}
+.check-item input:checked + label{
+  background:rgba(232,37,58,0.12);
+  border-color:rgba(232,37,58,0.4);
+  color:var(--text);
+}
+
+/* RADIO GROUP (inline) */
+.radio-group{
+  display:flex;gap:12px;
+}
+.radio-item{position:relative;}
+.radio-item input{position:absolute;opacity:0;pointer-events:none;}
+.radio-item label{
+  display:inline-block;
+  padding:10px 24px;
+  background:var(--dark3);
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-size:0.9rem;
+  color:var(--muted);
+  cursor:pointer;
+  transition:all 0.2s;
+  text-transform:none;
+  letter-spacing:0;
+  font-weight:400;
+}
+.radio-item input:checked + label{
+  background:rgba(232,37,58,0.12);
+  border-color:rgba(232,37,58,0.4);
+  color:var(--text);
+}
+
+/* CONDITIONAL FIELD */
+.conditional{
+  max-height:0;overflow:hidden;
+  transition:max-height 0.3s ease, margin 0.3s ease;
+  margin-bottom:0;
+}
+.conditional.visible{
+  max-height:200px;
+  margin-bottom:20px;
+}
+
+/* BUTTONS */
+.btn-row{
+  display:flex;gap:12px;
+  margin-top:28px;
+}
+.btn-back{
+  flex:0 0 auto;
+  background:var(--dark3);
+  color:var(--muted);
+  padding:14px 24px;
+  border-radius:10px;
+  font-family:'Syne',sans-serif;font-weight:600;font-size:0.95rem;
+  transition:all 0.25s;
+}
+.btn-back:hover{background:var(--dark4);color:var(--text);}
+.btn-next{
+  flex:1;
+  background:var(--red);
+  color:#fff;
+  padding:14px 24px;
+  border-radius:10px;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;
+  letter-spacing:0.03em;
+  transition:all 0.25s;
+  box-shadow:0 0 30px rgba(232,37,58,0.3);
+}
+.btn-next:hover{background:var(--red-dark);transform:translateY(-1px);}
+
+/* STEP CONTENT */
+.step-content{display:none;}
+.step-content.active{display:block;}
+
+/* SUCCESS SCREEN */
+.success-screen{
+  text-align:center;
+  padding:60px 20px;
+  display:none;
+}
+.success-screen.visible{display:block;}
+.success-icon{
+  font-size:4rem;
+  margin-bottom:20px;
+  display:block;
+}
+.success-screen h2{
+  font-size:1.6rem;font-weight:800;
+  margin-bottom:12px;
+}
+.success-screen h2 span{color:var(--red);}
+.success-screen p{
+  color:var(--muted);
+  font-size:0.95rem;
+  max-width:400px;
+  margin:0 auto 24px;
+}
+.success-screen .btn-home{
+  display:inline-block;
+  background:var(--dark3);
+  color:var(--text);
+  padding:14px 32px;
+  border-radius:10px;
+  font-family:'Syne',sans-serif;font-weight:600;font-size:0.95rem;
+  transition:all 0.25s;
+}
+.success-screen .btn-home:hover{background:var(--dark4);}
+
+/* FOOTER */
+.footer{
+  text-align:center;
+  padding:32px 5%;
+  border-top:1px solid var(--border);
+  font-size:0.82rem;color:var(--muted);
+}
+.footer a{color:var(--red);}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .form-card{padding:24px 18px;}
+  .stepper{gap:0;}
+  .step-label{font-size:0.6rem;max-width:60px;}
+  .step-circle{width:34px;height:34px;font-size:0.78rem;}
+  .stepper::before{top:17px;left:20px;right:20px;}
+  .btn-row{flex-direction:column-reverse;}
+  .btn-back{width:100%;text-align:center;}
+  .check-group{gap:8px;}
+  .check-item label{padding:6px 12px;font-size:0.78rem;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <div class="logo-drop">H</div>
+    Hemato
+  </a>
+  <a href="join.html" class="nav-back">Back to Join</a>
+</nav>
+
+<div class="wizard-wrapper" id="wizardWrapper">
+
+  <!-- PROGRESS STEPPER -->
+  <div class="stepper" id="stepper">
+    <div class="step-item active" data-step="1">
+      <div class="step-circle">1</div>
+      <div class="step-label">Personal Info</div>
+    </div>
+    <div class="step-item" data-step="2">
+      <div class="step-circle">2</div>
+      <div class="step-label">Identity &amp; Address</div>
+    </div>
+    <div class="step-item" data-step="3">
+      <div class="step-circle">3</div>
+      <div class="step-label">Professional</div>
+    </div>
+    <div class="step-item" data-step="4">
+      <div class="step-circle">4</div>
+      <div class="step-label">Work Prefs</div>
+    </div>
+    <div class="step-item" data-step="5">
+      <div class="step-circle">5</div>
+      <div class="step-label">Bank Details</div>
+    </div>
+  </div>
+
+  <!-- FORM CARD -->
+  <div class="form-card" id="formCard">
+    <form id="phleboForm" novalidate>
+
+      <!-- STEP 1: Personal Info -->
+      <div class="step-content active" data-step="1">
+        <h3 class="step-title">Personal Information</h3>
+        <p class="step-subtitle">Let's start with your basic details.</p>
+
+        <div class="form-group">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="fullName" placeholder="Enter your full name" required>
+          <div class="error-msg">Full name is required.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Phone / WhatsApp <span class="req">*</span></label>
+          <input type="tel" id="phone" placeholder="+91 98765 43210" required>
+          <div class="error-msg">Valid phone number is required.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" id="email" placeholder="you@example.com" required>
+          <div class="error-msg">Valid email is required.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Date of Birth <span class="req">*</span></label>
+          <input type="date" id="dob" required>
+          <div class="error-msg">Date of birth is required.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Gender</label>
+          <select id="gender">
+            <option value="">Select gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Photo</label>
+          <div class="file-upload" id="photoUploadArea">
+            <input type="file" id="photo" accept="image/*">
+            <span class="file-upload-icon">📷</span>
+            <div class="file-upload-text"><strong>Click to upload</strong> or drag your photo here</div>
+            <div class="file-name" id="photoFileName"></div>
+          </div>
+          <img class="photo-preview" id="photoPreview" alt="Photo preview">
+        </div>
+      </div>
+
+      <!-- STEP 2: Identity & Address -->
+      <div class="step-content" data-step="2">
+        <h3 class="step-title">Identity &amp; Address</h3>
+        <p class="step-subtitle">We need your Aadhaar and address for verification.</p>
+
+        <div class="form-group">
+          <label>Aadhaar Number <span class="req">*</span></label>
+          <input type="text" id="aadhaar" placeholder="1234 5678 9012" maxlength="14" required>
+          <div class="error-msg">Enter a valid 12-digit Aadhaar number.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Aadhaar Front <span class="req">*</span></label>
+          <div class="file-upload">
+            <input type="file" id="aadhaarFront" accept="image/*,.pdf" required>
+            <span class="file-upload-icon">📄</span>
+            <div class="file-upload-text"><strong>Upload</strong> Aadhaar front side</div>
+            <div class="file-name" id="aadhaarFrontName"></div>
+          </div>
+          <div class="error-msg">Aadhaar front image is required.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Aadhaar Back <span class="req">*</span></label>
+          <div class="file-upload">
+            <input type="file" id="aadhaarBack" accept="image/*,.pdf" required>
+            <span class="file-upload-icon">📄</span>
+            <div class="file-upload-text"><strong>Upload</strong> Aadhaar back side</div>
+            <div class="file-name" id="aadhaarBackName"></div>
+          </div>
+          <div class="error-msg">Aadhaar back image is required.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Full Address <span class="req">*</span></label>
+          <textarea id="address" placeholder="House/Flat No, Street, Area, Landmark" required></textarea>
+          <div class="error-msg">Address is required.</div>
+        </div>
+
+        <div class="form-group">
+          <label>City <span class="req">*</span></label>
+          <input type="text" id="city" value="Hyderabad" required>
+          <div class="error-msg">City is required.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Pincode <span class="req">*</span></label>
+          <input type="text" id="pincode" placeholder="500001" maxlength="6" required>
+          <div class="error-msg">Enter a valid 6-digit pincode.</div>
+        </div>
+      </div>
+
+      <!-- STEP 3: Professional Details -->
+      <div class="step-content" data-step="3">
+        <h3 class="step-title">Professional Details</h3>
+        <p class="step-subtitle">Tell us about your experience and skills.</p>
+
+        <div class="form-group">
+          <label>Years of Experience <span class="req">*</span></label>
+          <input type="number" id="experience" placeholder="e.g. 3" min="0" max="50" required>
+          <div class="error-msg">Years of experience is required.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Training Certificates</label>
+          <div class="file-upload">
+            <input type="file" id="certificates" multiple accept="image/*,.pdf">
+            <span class="file-upload-icon">📜</span>
+            <div class="file-upload-text"><strong>Upload</strong> certificates (multiple allowed)</div>
+            <div class="file-name" id="certificatesName"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Previous Employer</label>
+          <input type="text" id="prevEmployer" placeholder="Lab or hospital name (optional)">
+        </div>
+
+        <div class="form-group">
+          <label>Skills</label>
+          <div class="check-group">
+            <div class="check-item">
+              <input type="checkbox" id="skill1" value="Venipuncture">
+              <label for="skill1">Venipuncture</label>
+            </div>
+            <div class="check-item">
+              <input type="checkbox" id="skill2" value="Pediatric Collection">
+              <label for="skill2">Pediatric Collection</label>
+            </div>
+            <div class="check-item">
+              <input type="checkbox" id="skill3" value="Geriatric Collection">
+              <label for="skill3">Geriatric Collection</label>
+            </div>
+            <div class="check-item">
+              <input type="checkbox" id="skill4" value="Capillary Collection">
+              <label for="skill4">Capillary Collection</label>
+            </div>
+            <div class="check-item">
+              <input type="checkbox" id="skill5" value="Point-of-Care Testing">
+              <label for="skill5">Point-of-Care Testing</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4: Work Preferences -->
+      <div class="step-content" data-step="4">
+        <h3 class="step-title">Work Preferences</h3>
+        <p class="step-subtitle">Choose your preferred zones and schedule.</p>
+
+        <div class="form-group">
+          <label>Preferred Zones</label>
+          <div class="check-group">
+            <div class="check-item"><input type="checkbox" id="z1" value="Banjara Hills"><label for="z1">Banjara Hills</label></div>
+            <div class="check-item"><input type="checkbox" id="z2" value="Jubilee Hills"><label for="z2">Jubilee Hills</label></div>
+            <div class="check-item"><input type="checkbox" id="z3" value="Madhapur"><label for="z3">Madhapur</label></div>
+            <div class="check-item"><input type="checkbox" id="z4" value="Gachibowli"><label for="z4">Gachibowli</label></div>
+            <div class="check-item"><input type="checkbox" id="z5" value="Kondapur"><label for="z5">Kondapur</label></div>
+            <div class="check-item"><input type="checkbox" id="z6" value="Kukatpally"><label for="z6">Kukatpally</label></div>
+            <div class="check-item"><input type="checkbox" id="z7" value="Ameerpet"><label for="z7">Ameerpet</label></div>
+            <div class="check-item"><input type="checkbox" id="z8" value="Secunderabad"><label for="z8">Secunderabad</label></div>
+            <div class="check-item"><input type="checkbox" id="z9" value="Dilsukhnagar"><label for="z9">Dilsukhnagar</label></div>
+            <div class="check-item"><input type="checkbox" id="z10" value="LB Nagar"><label for="z10">LB Nagar</label></div>
+            <div class="check-item"><input type="checkbox" id="z11" value="Uppal"><label for="z11">Uppal</label></div>
+            <div class="check-item"><input type="checkbox" id="z12" value="Miyapur"><label for="z12">Miyapur</label></div>
+            <div class="check-item"><input type="checkbox" id="z13" value="ECIL"><label for="z13">ECIL</label></div>
+            <div class="check-item"><input type="checkbox" id="z14" value="Begumpet"><label for="z14">Begumpet</label></div>
+            <div class="check-item"><input type="checkbox" id="z15" value="Mehdipatnam"><label for="z15">Mehdipatnam</label></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Availability</label>
+          <select id="availability">
+            <option value="">Select availability</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Weekends Only">Weekends Only</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Preferred Shift</label>
+          <select id="shift">
+            <option value="">Select shift</option>
+            <option value="Morning 6AM-12PM">Morning 6AM-12PM</option>
+            <option value="Afternoon 12PM-6PM">Afternoon 12PM-6PM</option>
+            <option value="Evening 6PM-10PM">Evening 6PM-10PM</option>
+            <option value="Flexible">Flexible</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Own Vehicle</label>
+          <div class="radio-group">
+            <div class="radio-item">
+              <input type="radio" name="vehicle" id="vehicleYes" value="Yes">
+              <label for="vehicleYes">Yes</label>
+            </div>
+            <div class="radio-item">
+              <input type="radio" name="vehicle" id="vehicleNo" value="No">
+              <label for="vehicleNo">No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="conditional" id="vehicleTypeWrap">
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Vehicle Type</label>
+            <select id="vehicleType">
+              <option value="">Select type</option>
+              <option value="Two Wheeler">Two Wheeler</option>
+              <option value="Four Wheeler">Four Wheeler</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5: Bank Details -->
+      <div class="step-content" data-step="5">
+        <h3 class="step-title">Bank Details</h3>
+        <p class="step-subtitle">For salary and payout processing.</p>
+
+        <div class="form-group">
+          <label>Bank Name <span class="req">*</span></label>
+          <input type="text" id="bankName" placeholder="e.g. State Bank of India" required>
+          <div class="error-msg">Bank name is required.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Account Number <span class="req">*</span></label>
+          <input type="text" id="accountNumber" placeholder="Enter account number" required>
+          <div class="error-msg">Account number is required.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Confirm Account Number <span class="req">*</span></label>
+          <input type="text" id="confirmAccountNumber" placeholder="Re-enter account number" required>
+          <div class="error-msg">Account numbers must match.</div>
+        </div>
+
+        <div class="form-group">
+          <label>IFSC Code <span class="req">*</span></label>
+          <input type="text" id="ifsc" placeholder="e.g. SBIN0001234" maxlength="11" required>
+          <div class="error-msg">Enter a valid IFSC code (e.g. SBIN0001234).</div>
+        </div>
+
+        <div class="form-group">
+          <label>UPI ID</label>
+          <input type="text" id="upi" placeholder="yourname@upi (optional)">
+        </div>
+      </div>
+
+    </form>
+
+    <!-- NAVIGATION BUTTONS -->
+    <div class="btn-row" id="btnRow">
+      <button class="btn-back" id="btnBack" style="display:none;" onclick="prevStep()">Back</button>
+      <button class="btn-next" id="btnNext" onclick="nextStep()">Next Step</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS SCREEN -->
+  <div class="success-screen" id="successScreen">
+    <span class="success-icon">&#10003;</span>
+    <h2>Application <span>Submitted!</span></h2>
+    <p>We'll review your application within 48 hours. You'll receive a WhatsApp confirmation shortly.</p>
+    <a href="join.html" class="btn-home">Back to Join Page</a>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>&copy; 2026 SmartGumastha Technologies. <a href="/">hemato.in</a> &mdash; We Deliver Health.</p>
+</div>
+
+<script>
+(function() {
+  var currentStep = 1;
+  var totalSteps = 5;
+
+  // ---- File upload display ----
+  function setupFileInput(inputId, nameId, uploadArea) {
+    var input = document.getElementById(inputId);
+    var nameEl = document.getElementById(nameId);
+    if (!input || !nameEl) return;
+    input.addEventListener('change', function() {
+      var parent = input.closest('.file-upload');
+      if (input.files.length > 0) {
+        var names = [];
+        for (var i = 0; i < input.files.length; i++) names.push(input.files[i].name);
+        nameEl.textContent = names.join(', ');
+        if (parent) parent.classList.add('has-file');
+      } else {
+        nameEl.textContent = '';
+        if (parent) parent.classList.remove('has-file');
+      }
+    });
+  }
+  setupFileInput('photo', 'photoFileName');
+  setupFileInput('aadhaarFront', 'aadhaarFrontName');
+  setupFileInput('aadhaarBack', 'aadhaarBackName');
+  setupFileInput('certificates', 'certificatesName');
+
+  // ---- Photo preview ----
+  var photoInput = document.getElementById('photo');
+  var photoPreview = document.getElementById('photoPreview');
+  photoInput.addEventListener('change', function() {
+    if (photoInput.files && photoInput.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        photoPreview.src = e.target.result;
+        photoPreview.classList.add('visible');
+      };
+      reader.readAsDataURL(photoInput.files[0]);
+    } else {
+      photoPreview.classList.remove('visible');
+    }
+  });
+
+  // ---- Vehicle type toggle ----
+  var vehicleYes = document.getElementById('vehicleYes');
+  var vehicleNo = document.getElementById('vehicleNo');
+  var vehicleTypeWrap = document.getElementById('vehicleTypeWrap');
+  vehicleYes.addEventListener('change', function() {
+    if (vehicleYes.checked) vehicleTypeWrap.classList.add('visible');
+  });
+  vehicleNo.addEventListener('change', function() {
+    if (vehicleNo.checked) vehicleTypeWrap.classList.remove('visible');
+  });
+
+  // ---- Aadhaar formatting ----
+  var aadhaarInput = document.getElementById('aadhaar');
+  aadhaarInput.addEventListener('input', function() {
+    var v = aadhaarInput.value.replace(/\D/g, '').substring(0, 12);
+    var formatted = v.replace(/(\d{4})(?=\d)/g, '$1 ');
+    aadhaarInput.value = formatted;
+  });
+
+  // ---- Stepper rendering ----
+  function updateStepper() {
+    var items = document.querySelectorAll('.step-item');
+    items.forEach(function(item) {
+      var s = parseInt(item.getAttribute('data-step'));
+      item.classList.remove('active', 'completed');
+      if (s === currentStep) item.classList.add('active');
+      else if (s < currentStep) item.classList.add('completed');
+    });
+  }
+
+  // ---- Show step content ----
+  function showStep(step) {
+    document.querySelectorAll('.step-content').forEach(function(el) {
+      el.classList.remove('active');
+    });
+    var target = document.querySelector('.step-content[data-step="' + step + '"]');
+    if (target) target.classList.add('active');
+
+    document.getElementById('btnBack').style.display = step === 1 ? 'none' : '';
+    document.getElementById('btnNext').textContent = step === totalSteps ? 'Submit Application' : 'Next Step';
+
+    updateStepper();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ---- Validation helpers ----
+  function clearErrors(container) {
+    container.querySelectorAll('.form-group').forEach(function(g) {
+      g.classList.remove('has-error');
+    });
+    container.querySelectorAll('input, select, textarea').forEach(function(f) {
+      f.classList.remove('error');
+    });
+  }
+
+  function markError(el) {
+    el.classList.add('error');
+    var group = el.closest('.form-group');
+    if (group) group.classList.add('has-error');
+  }
+
+  function val(id) {
+    var el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+  }
+
+  function validateStep(step) {
+    var container = document.querySelector('.step-content[data-step="' + step + '"]');
+    clearErrors(container);
+    var valid = true;
+
+    function req(id) {
+      var v = val(id);
+      if (!v) { markError(document.getElementById(id)); valid = false; }
+      return v;
+    }
+
+    if (step === 1) {
+      req('fullName');
+      var phone = req('phone');
+      var email = req('email');
+      req('dob');
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        markError(document.getElementById('email'));
+        valid = false;
+      }
+    }
+
+    if (step === 2) {
+      var aNum = val('aadhaar').replace(/\s/g, '');
+      if (!aNum || aNum.length !== 12 || !/^\d{12}$/.test(aNum)) {
+        markError(document.getElementById('aadhaar'));
+        valid = false;
+      }
+      if (!document.getElementById('aadhaarFront').files.length) {
+        markError(document.getElementById('aadhaarFront'));
+        var g = document.getElementById('aadhaarFront').closest('.form-group');
+        if (g) g.classList.add('has-error');
+        valid = false;
+      }
+      if (!document.getElementById('aadhaarBack').files.length) {
+        markError(document.getElementById('aadhaarBack'));
+        var g2 = document.getElementById('aadhaarBack').closest('.form-group');
+        if (g2) g2.classList.add('has-error');
+        valid = false;
+      }
+      req('address');
+      req('city');
+      var pin = req('pincode');
+      if (pin && (pin.length !== 6 || !/^\d{6}$/.test(pin))) {
+        markError(document.getElementById('pincode'));
+        valid = false;
+      }
+    }
+
+    if (step === 3) {
+      req('experience');
+    }
+
+    // Step 4 has no hard required fields
+
+    if (step === 5) {
+      req('bankName');
+      var acc = req('accountNumber');
+      var confAcc = req('confirmAccountNumber');
+      if (acc && confAcc && acc !== confAcc) {
+        markError(document.getElementById('confirmAccountNumber'));
+        valid = false;
+      }
+      var ifsc = req('ifsc');
+      if (ifsc && !/^[A-Za-z]{4}0[A-Za-z0-9]{6}$/.test(ifsc)) {
+        markError(document.getElementById('ifsc'));
+        valid = false;
+      }
+    }
+
+    return valid;
+  }
+
+  // ---- Collect checked values ----
+  function getChecked(prefix, count) {
+    var arr = [];
+    for (var i = 1; i <= count; i++) {
+      var el = document.getElementById(prefix + i);
+      if (el && el.checked) arr.push(el.value);
+    }
+    return arr;
+  }
+
+  // ---- Submit ----
+  function submitForm() {
+    var skills = getChecked('skill', 5);
+    var zones = getChecked('z', 15);
+    var vehicle = document.querySelector('input[name="vehicle"]:checked');
+
+    var lines = [
+      'PHLEBOTOMIST APPLICATION',
+      '========================',
+      '',
+      'PERSONAL INFO',
+      'Name: ' + val('fullName'),
+      'Phone: ' + val('phone'),
+      'Email: ' + val('email'),
+      'DOB: ' + val('dob'),
+      'Gender: ' + (val('gender') || 'Not specified'),
+      '',
+      'IDENTITY & ADDRESS',
+      'Aadhaar: ' + val('aadhaar'),
+      'Address: ' + val('address'),
+      'City: ' + val('city'),
+      'Pincode: ' + val('pincode'),
+      '',
+      'PROFESSIONAL',
+      'Experience: ' + val('experience') + ' years',
+      'Previous Employer: ' + (val('prevEmployer') || 'N/A'),
+      'Skills: ' + (skills.length ? skills.join(', ') : 'None selected'),
+      '',
+      'WORK PREFERENCES',
+      'Zones: ' + (zones.length ? zones.join(', ') : 'None selected'),
+      'Availability: ' + (val('availability') || 'Not specified'),
+      'Shift: ' + (val('shift') || 'Not specified'),
+      'Own Vehicle: ' + (vehicle ? vehicle.value : 'Not specified'),
+      'Vehicle Type: ' + (vehicle && vehicle.value === 'Yes' ? (val('vehicleType') || 'Not specified') : 'N/A'),
+      '',
+      'BANK DETAILS',
+      'Bank: ' + val('bankName'),
+      'Account: ' + val('accountNumber'),
+      'IFSC: ' + val('ifsc'),
+      'UPI: ' + (val('upi') || 'N/A')
+    ];
+
+    var text = encodeURIComponent(lines.join('\n'));
+
+    // TODO: Replace with API call to POST /api/hemato/phlebo/apply
+    window.open('https://wa.me/917993135689?text=' + text, '_blank');
+
+    // Show success
+    document.getElementById('formCard').style.display = 'none';
+    document.getElementById('stepper').style.display = 'none';
+    document.getElementById('successScreen').classList.add('visible');
+  }
+
+  // ---- Navigation ----
+  window.nextStep = function() {
+    if (!validateStep(currentStep)) return;
+    if (currentStep === totalSteps) {
+      submitForm();
+      return;
+    }
+    currentStep++;
+    showStep(currentStep);
+  };
+
+  window.prevStep = function() {
+    if (currentStep > 1) {
+      currentStep--;
+      showStep(currentStep);
+    }
+  };
+
+  // Initialize
+  showStep(1);
+})();
+</script>
+</body>
+</html>

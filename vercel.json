@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/join/phlebotomist",
+      "destination": "/phlebo-onboard.html"
+    },
+    {
+      "source": "/join/lab",
+      "destination": "/lab-onboard.html"
+    },
+    {
       "source": "/backend/:path*",
       "destination": "https://smartgumastha-backend-production.up.railway.app/:path*"
     },
@@ -18,6 +26,16 @@
       "source": "/:path*",
       "has": [{ "type": "host", "value": "physio.hemato.in" }],
       "destination": "/app.html"
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "partner.hemato.in" }],
+      "destination": "/lab-partner.html"
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "phlebo.hemato.in" }],
+      "destination": "/phlebo-app.html"
     }
   ],
   "redirects": [

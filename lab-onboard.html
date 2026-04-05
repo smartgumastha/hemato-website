@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab Onboarding — Hemato</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #E8253A;
+  --red-dark: #B01C2C;
+  --red-glow: rgba(232,37,58,0.18);
+  --dark: #0C0D0F;
+  --dark2: #131518;
+  --dark3: #1A1D21;
+  --dark4: #22262C;
+  --border: rgba(255,255,255,0.07);
+  --text: #F0F1F3;
+  --muted: #8A8F99;
+  --light: #FFFFFF;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--dark);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+h1,h2,h3,h4{font-family:'Syne',sans-serif;}
+a{color:inherit;text-decoration:none;}
+button{cursor:pointer;border:none;outline:none;}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  padding:0 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  height:72px;
+  background:rgba(12,13,15,0.95);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  display:flex;align-items:center;gap:12px;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;
+  letter-spacing:-0.02em;
+}
+.logo-drop{
+  width:36px;height:36px;
+  background:var(--red);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:800;color:#fff;
+  box-shadow:0 0 20px var(--red-glow);
+}
+.nav-back{
+  color:var(--muted);
+  font-size:0.9rem;
+  font-weight:500;
+  transition:color 0.2s;
+}
+.nav-back:hover{color:var(--text);}
+
+/* MAIN */
+.main{
+  padding:100px 5% 60px;
+  max-width:720px;
+  margin:0 auto;
+}
+.page-title{
+  text-align:center;
+  margin-bottom:36px;
+}
+.page-title h1{
+  font-size:clamp(1.6rem,4vw,2.4rem);
+  font-weight:800;
+  line-height:1.15;
+  letter-spacing:-0.03em;
+  margin-bottom:6px;
+}
+.page-title h1 span{color:var(--red);}
+.page-title p{
+  font-size:0.95rem;
+  color:var(--muted);
+}
+
+/* STEPPER */
+.stepper{
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  gap:0;
+  margin-bottom:36px;
+  overflow-x:auto;
+  padding:0 4px;
+}
+.step-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  position:relative;
+  flex:1;
+  min-width:0;
+}
+.step-circle{
+  width:38px;height:38px;
+  border-radius:50%;
+  background:var(--dark3);
+  border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;
+  color:var(--muted);
+  transition:all 0.3s;
+  position:relative;
+  z-index:2;
+  flex-shrink:0;
+}
+.step-item.active .step-circle{
+  background:var(--red);
+  border-color:var(--red);
+  color:#fff;
+  box-shadow:0 0 20px var(--red-glow);
+}
+.step-item.completed .step-circle{
+  background:var(--red-dark);
+  border-color:var(--red-dark);
+  color:#fff;
+}
+.step-item.completed .step-circle::after{
+  content:'\2713';
+  font-size:1rem;
+}
+.step-item.completed .step-num{display:none;}
+.step-label{
+  font-size:0.68rem;
+  color:var(--muted);
+  margin-top:8px;
+  text-align:center;
+  letter-spacing:0.02em;
+  font-weight:500;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:90px;
+}
+.step-item.active .step-label{color:var(--text);font-weight:600;}
+.step-item.completed .step-label{color:var(--red);}
+
+.step-connector{
+  height:2px;
+  flex:1;
+  background:var(--border);
+  margin-top:19px;
+  min-width:12px;
+}
+.step-connector.done{background:var(--red-dark);}
+
+/* FORM CARD */
+.form-card{
+  background:var(--dark2);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:36px 30px;
+  max-width:600px;
+  margin:0 auto;
+}
+.step-content{display:none;}
+.step-content.active{display:block;}
+.step-heading{
+  font-family:'Syne',sans-serif;
+  font-size:1.2rem;
+  font-weight:700;
+  margin-bottom:24px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--border);
+}
+
+/* FORM ELEMENTS */
+.form-group{margin-bottom:20px;}
+.form-group label{
+  display:block;font-size:0.78rem;font-weight:600;
+  letter-spacing:0.04em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:8px;
+}
+.form-group label .req{color:var(--red);margin-left:2px;}
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="url"],
+.form-group input[type="number"],
+.form-group input[type="time"],
+.form-group select,
+.form-group textarea{
+  width:100%;
+  background:var(--dark3);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px 16px;
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:0.95rem;
+  transition:border-color 0.2s;
+  outline:none;
+}
+.form-group textarea{resize:vertical;min-height:80px;}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{border-color:rgba(232,37,58,0.5);}
+.form-group select option{background:var(--dark3);}
+.form-group input::placeholder,
+.form-group textarea::placeholder{color:var(--muted);opacity:0.6;}
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error{border-color:var(--red);}
+.error-msg{
+  font-size:0.75rem;color:var(--red);margin-top:4px;display:none;
+}
+.form-group.has-error .error-msg{display:block;}
+
+/* RADIO / CHECKBOX GROUPS */
+.radio-group,
+.checkbox-group{
+  display:flex;flex-wrap:wrap;gap:10px;
+}
+.radio-group label,
+.checkbox-group label{
+  display:flex;align-items:center;gap:8px;
+  background:var(--dark3);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px 16px;
+  font-size:0.88rem;font-weight:400;
+  text-transform:none;letter-spacing:0;
+  color:var(--text);
+  cursor:pointer;
+  transition:all 0.2s;
+  user-select:none;
+}
+.radio-group label:hover,
+.checkbox-group label:hover{border-color:rgba(232,37,58,0.3);}
+.radio-group input,
+.checkbox-group input{
+  accent-color:var(--red);
+  width:16px;height:16px;
+  cursor:pointer;
+}
+.radio-group input:checked + span,
+.checkbox-group input:checked + span{color:var(--red);}
+.radio-group label:has(input:checked),
+.checkbox-group label:has(input:checked){
+  border-color:rgba(232,37,58,0.4);
+  background:rgba(232,37,58,0.06);
+}
+.checkbox-group.compact label{
+  padding:8px 12px;
+  font-size:0.82rem;
+}
+
+/* FILE INPUT */
+.file-input-wrap{
+  position:relative;
+}
+.file-input-wrap input[type="file"]{
+  position:absolute;
+  width:100%;height:100%;
+  opacity:0;cursor:pointer;
+  top:0;left:0;z-index:2;
+}
+.file-input-display{
+  display:flex;align-items:center;gap:12px;
+  background:var(--dark3);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px 16px;
+  cursor:pointer;
+  transition:border-color 0.2s;
+}
+.file-input-wrap:hover .file-input-display{border-color:rgba(232,37,58,0.3);}
+.file-input-display .file-icon{
+  font-size:1.2rem;flex-shrink:0;
+}
+.file-input-display .file-text{
+  font-size:0.88rem;color:var(--muted);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.file-input-display .file-text.selected{color:var(--text);}
+
+/* ROW */
+.form-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+/* CONDITIONAL FIELDS */
+.conditional{display:none;}
+.conditional.visible{display:block;}
+
+/* NAV BUTTONS */
+.btn-row{
+  display:flex;
+  gap:12px;
+  margin-top:32px;
+}
+.btn-back,.btn-next,.btn-submit{
+  padding:14px 28px;
+  border-radius:10px;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;
+  letter-spacing:0.03em;
+  transition:all 0.25s;
+}
+.btn-back{
+  background:var(--dark3);
+  color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-back:hover{background:var(--dark4);border-color:rgba(255,255,255,0.12);}
+.btn-next,.btn-submit{
+  background:var(--red);
+  color:#fff;
+  flex:1;
+  box-shadow:0 0 30px rgba(232,37,58,0.3);
+}
+.btn-next:hover,.btn-submit:hover{
+  background:var(--red-dark);
+  transform:translateY(-1px);
+}
+
+/* SUCCESS */
+.success-screen{
+  display:none;
+  text-align:center;
+  padding:60px 20px;
+}
+.success-screen.visible{display:block;}
+.success-icon{
+  width:80px;height:80px;
+  border-radius:50%;
+  background:rgba(232,37,58,0.12);
+  border:2px solid var(--red);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.4rem;
+  margin:0 auto 24px;
+}
+.success-screen h2{
+  font-size:1.5rem;font-weight:800;margin-bottom:10px;
+}
+.success-screen p{
+  color:var(--muted);font-size:0.95rem;max-width:420px;margin:0 auto 24px;
+}
+.success-screen .btn-home{
+  display:inline-block;
+  background:var(--dark3);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:12px 28px;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;
+  color:var(--text);
+  transition:all 0.2s;
+}
+.success-screen .btn-home:hover{border-color:rgba(232,37,58,0.3);}
+
+/* FOOTER */
+.footer{
+  text-align:center;
+  padding:32px 5%;
+  border-top:1px solid var(--border);
+  font-size:0.82rem;color:var(--muted);
+}
+.footer a{color:var(--red);}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .form-card{padding:24px 18px;}
+  .form-row{grid-template-columns:1fr;}
+  .stepper{gap:0;}
+  .step-label{font-size:0.6rem;max-width:56px;}
+  .step-circle{width:32px;height:32px;font-size:0.75rem;}
+  .step-connector{margin-top:16px;}
+  .btn-row{flex-direction:column-reverse;}
+  .btn-back{text-align:center;}
+  .page-title{margin-bottom:24px;}
+  .main{padding:88px 4% 40px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <div class="logo-drop">H</div>
+    Hemato
+  </a>
+  <a href="join.html" class="nav-back">&larr; Back to Join</a>
+</nav>
+
+<div class="main" id="mainContent">
+  <div class="page-title">
+    <h1>Lab <span>Onboarding</span></h1>
+    <p>Complete all 5 steps to submit your application.</p>
+  </div>
+
+  <!-- STEPPER -->
+  <div class="stepper" id="stepper">
+    <div class="step-item active" data-step="1">
+      <div class="step-circle"><span class="step-num">1</span></div>
+      <div class="step-label">Lab Info</div>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step-item" data-step="2">
+      <div class="step-circle"><span class="step-num">2</span></div>
+      <div class="step-label">Location</div>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step-item" data-step="3">
+      <div class="step-circle"><span class="step-num">3</span></div>
+      <div class="step-label">Certifications</div>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step-item" data-step="4">
+      <div class="step-circle"><span class="step-num">4</span></div>
+      <div class="step-label">Services</div>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step-item" data-step="5">
+      <div class="step-circle"><span class="step-num">5</span></div>
+      <div class="step-label">Pricing & Bank</div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-card" id="formCard">
+
+    <!-- STEP 1 -->
+    <div class="step-content active" id="step1">
+      <div class="step-heading">Lab Information</div>
+
+      <div class="form-group">
+        <label>Lab Name <span class="req">*</span></label>
+        <input type="text" id="labName" placeholder="e.g., City Diagnostics" required>
+        <div class="error-msg">Lab name is required</div>
+      </div>
+
+      <div class="form-group">
+        <label>Owner / Manager Name <span class="req">*</span></label>
+        <input type="text" id="ownerName" placeholder="e.g., Dr. Ravi Shankar" required>
+        <div class="error-msg">Owner/Manager name is required</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Phone <span class="req">*</span></label>
+          <input type="tel" id="phone" placeholder="+91 98765 43210" required>
+          <div class="error-msg">Phone number is required</div>
+        </div>
+        <div class="form-group">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" id="email" placeholder="lab@example.com" required>
+          <div class="error-msg">Valid email is required</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Lab Type <span class="req">*</span></label>
+          <select id="labType" required>
+            <option value="">Select type</option>
+            <option value="Pathology">Pathology</option>
+            <option value="Radiology">Radiology</option>
+            <option value="Both">Both</option>
+          </select>
+          <div class="error-msg">Lab type is required</div>
+        </div>
+        <div class="form-group">
+          <label>Established Year <span class="req">*</span></label>
+          <input type="number" id="estYear" min="1950" max="2026" placeholder="e.g., 2015" required>
+          <div class="error-msg">Valid year (1950-2026) required</div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-next" onclick="nextStep()">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step-content" id="step2">
+      <div class="step-heading">Location Details</div>
+
+      <div class="form-group">
+        <label>Full Address <span class="req">*</span></label>
+        <textarea id="fullAddress" placeholder="Street, area, landmark..." required></textarea>
+        <div class="error-msg">Address is required</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>City <span class="req">*</span></label>
+          <input type="text" id="city" value="Hyderabad" required>
+          <div class="error-msg">City is required</div>
+        </div>
+        <div class="form-group">
+          <label>Pincode <span class="req">*</span></label>
+          <input type="text" id="pincode" placeholder="500001" pattern="\d{6}" maxlength="6" required>
+          <div class="error-msg">Valid 6-digit pincode required</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Google Maps Link</label>
+        <input type="url" id="mapsLink" placeholder="Paste your Google Maps link">
+      </div>
+
+      <div class="form-group">
+        <label>Service Radius in km <span class="req">*</span></label>
+        <input type="number" id="serviceRadius" placeholder="e.g., 10" min="1" required>
+        <div class="error-msg">Service radius is required</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-back" onclick="prevStep()">&larr; Back</button>
+        <button class="btn-next" onclick="nextStep()">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step-content" id="step3">
+      <div class="step-heading">Certifications</div>
+
+      <div class="form-group">
+        <label>NABL Accredited <span class="req">*</span></label>
+        <div class="radio-group">
+          <label><input type="radio" name="nabl" value="Yes" onchange="handleNabl()"><span>Yes</span></label>
+          <label><input type="radio" name="nabl" value="No" onchange="handleNabl()"><span>No</span></label>
+          <label><input type="radio" name="nabl" value="In Process" onchange="handleNabl()"><span>In Process</span></label>
+        </div>
+        <div class="error-msg">Please select NABL status</div>
+      </div>
+
+      <div class="form-group conditional" id="nablCertWrap">
+        <label>NABL Certificate <span class="req">*</span></label>
+        <div class="file-input-wrap">
+          <input type="file" id="nablCert" accept=".pdf,.jpg,.jpeg,.png" onchange="showFileName(this,'nablCertText')">
+          <div class="file-input-display">
+            <span class="file-icon">&#128206;</span>
+            <span class="file-text" id="nablCertText">Upload NABL certificate (PDF/Image)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group conditional" id="nablAppWrap">
+        <label>NABL Application Number <span class="req">*</span></label>
+        <input type="text" id="nablAppNum" placeholder="Application number">
+      </div>
+
+      <div class="form-group">
+        <label>License Number <span class="req">*</span></label>
+        <input type="text" id="licenseNum" placeholder="Lab license number" required>
+        <div class="error-msg">License number is required</div>
+      </div>
+
+      <div class="form-group">
+        <label>License Document <span class="req">*</span></label>
+        <div class="file-input-wrap">
+          <input type="file" id="licensDoc" accept=".pdf,.jpg,.jpeg,.png" onchange="showFileName(this,'licensDocText')" required>
+          <div class="file-input-display">
+            <span class="file-icon">&#128206;</span>
+            <span class="file-text" id="licensDocText">Upload license document (PDF/Image)</span>
+          </div>
+        </div>
+        <div class="error-msg">License document is required</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-back" onclick="prevStep()">&larr; Back</button>
+        <button class="btn-next" onclick="nextStep()">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step-content" id="step4">
+      <div class="step-heading">Services Offered</div>
+
+      <div class="form-group">
+        <label>Test Categories</label>
+        <div class="checkbox-group compact">
+          <label><input type="checkbox" name="tests" value="Hematology"><span>Hematology</span></label>
+          <label><input type="checkbox" name="tests" value="Biochemistry"><span>Biochemistry</span></label>
+          <label><input type="checkbox" name="tests" value="Microbiology"><span>Microbiology</span></label>
+          <label><input type="checkbox" name="tests" value="Serology"><span>Serology</span></label>
+          <label><input type="checkbox" name="tests" value="Histopathology"><span>Histopathology</span></label>
+          <label><input type="checkbox" name="tests" value="Cytology"><span>Cytology</span></label>
+          <label><input type="checkbox" name="tests" value="Clinical Pathology"><span>Clinical Pathology</span></label>
+          <label><input type="checkbox" name="tests" value="Molecular Biology"><span>Molecular Biology</span></label>
+          <label><input type="checkbox" name="tests" value="Immunology"><span>Immunology</span></label>
+          <label><input type="checkbox" name="tests" value="Radiology/Imaging"><span>Radiology/Imaging</span></label>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Home Collection</label>
+          <div class="radio-group">
+            <label><input type="radio" name="homeCollection" value="Yes"><span>Yes</span></label>
+            <label><input type="radio" name="homeCollection" value="No"><span>No</span></label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Sample Pickup</label>
+          <div class="radio-group">
+            <label><input type="radio" name="samplePickup" value="Yes"><span>Yes</span></label>
+            <label><input type="radio" name="samplePickup" value="No"><span>No</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Operating Hours — From</label>
+          <input type="time" id="hoursFrom" value="08:00">
+        </div>
+        <div class="form-group">
+          <label>Operating Hours — To</label>
+          <input type="time" id="hoursTo" value="20:00">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Working Days</label>
+        <div class="checkbox-group compact">
+          <label><input type="checkbox" name="days" value="Mon"><span>Mon</span></label>
+          <label><input type="checkbox" name="days" value="Tue"><span>Tue</span></label>
+          <label><input type="checkbox" name="days" value="Wed"><span>Wed</span></label>
+          <label><input type="checkbox" name="days" value="Thu"><span>Thu</span></label>
+          <label><input type="checkbox" name="days" value="Fri"><span>Fri</span></label>
+          <label><input type="checkbox" name="days" value="Sat"><span>Sat</span></label>
+          <label><input type="checkbox" name="days" value="Sun"><span>Sun</span></label>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-back" onclick="prevStep()">&larr; Back</button>
+        <button class="btn-next" onclick="nextStep()">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="step-content" id="step5">
+      <div class="step-heading">Pricing & Bank Details</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Starting Price Range</label>
+          <select id="priceRange">
+            <option value="">Select range</option>
+            <option value="Below ₹200">Below &#8377;200</option>
+            <option value="₹200-500">&#8377;200-500</option>
+            <option value="₹500-1000">&#8377;500-1000</option>
+            <option value="Above ₹1000">Above &#8377;1000</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>GST Number</label>
+          <input type="text" id="gstNum" placeholder="22AAAAA0000A1Z5" maxlength="15" pattern="[0-9A-Z]{15}">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Bank Name <span class="req">*</span></label>
+        <input type="text" id="bankName" placeholder="e.g., State Bank of India" required>
+        <div class="error-msg">Bank name is required</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Account Number <span class="req">*</span></label>
+          <input type="text" id="accNum" placeholder="Account number" required>
+          <div class="error-msg">Account number is required</div>
+        </div>
+        <div class="form-group">
+          <label>Confirm Account No. <span class="req">*</span></label>
+          <input type="text" id="accNumConfirm" placeholder="Re-enter account number" required>
+          <div class="error-msg">Account numbers must match</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>IFSC Code <span class="req">*</span></label>
+        <input type="text" id="ifsc" placeholder="e.g., SBIN0001234" required>
+        <div class="error-msg">IFSC code is required</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-back" onclick="prevStep()">&larr; Back</button>
+        <button class="btn-submit" onclick="submitForm()">Submit Application &rarr;</button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">&#10003;</div>
+      <h2>Application Submitted!</h2>
+      <p>Our team will review your application and may schedule a verification visit. You'll hear from us within 72 hours.</p>
+      <a href="join.html" class="btn-home">&larr; Back to Join Page</a>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  <p>&copy; 2026 SmartGumastha Technologies. <a href="/">hemato.in</a> — We Deliver Health.</p>
+</div>
+
+<script>
+var currentStep = 1;
+var totalSteps = 5;
+
+function updateStepper() {
+  var items = document.querySelectorAll('.step-item');
+  var connectors = document.querySelectorAll('.step-connector');
+  items.forEach(function(item, i) {
+    var s = i + 1;
+    item.classList.remove('active', 'completed');
+    if (s < currentStep) item.classList.add('completed');
+    else if (s === currentStep) item.classList.add('active');
+  });
+  connectors.forEach(function(c, i) {
+    c.classList.toggle('done', i + 1 < currentStep);
+  });
+}
+
+function showStep(n) {
+  document.querySelectorAll('.step-content').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  var target = document.getElementById('step' + n);
+  if (target) target.classList.add('active');
+  updateStepper();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function clearErrors(stepEl) {
+  stepEl.querySelectorAll('.form-group').forEach(function(g) {
+    g.classList.remove('has-error');
+  });
+  stepEl.querySelectorAll('input, select, textarea').forEach(function(f) {
+    f.classList.remove('error');
+  });
+}
+
+function markError(field) {
+  field.classList.add('error');
+  var g = field.closest('.form-group');
+  if (g) g.classList.add('has-error');
+}
+
+function validateStep(n) {
+  var stepEl = document.getElementById('step' + n);
+  clearErrors(stepEl);
+  var valid = true;
+
+  if (n === 1) {
+    var fields = ['labName','ownerName','phone','email','labType','estYear'];
+    fields.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (!el.value.trim()) { markError(el); valid = false; }
+    });
+    var emailEl = document.getElementById('email');
+    if (emailEl.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value)) {
+      markError(emailEl); valid = false;
+    }
+    var yearEl = document.getElementById('estYear');
+    var y = parseInt(yearEl.value);
+    if (yearEl.value && (y < 1950 || y > 2026)) {
+      markError(yearEl); valid = false;
+    }
+  }
+
+  if (n === 2) {
+    ['fullAddress','city','pincode','serviceRadius'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (!el.value.trim()) { markError(el); valid = false; }
+    });
+    var pin = document.getElementById('pincode');
+    if (pin.value && !/^\d{6}$/.test(pin.value)) {
+      markError(pin); valid = false;
+    }
+  }
+
+  if (n === 3) {
+    var nablSel = document.querySelector('input[name="nabl"]:checked');
+    if (!nablSel) {
+      var rg = stepEl.querySelector('.radio-group');
+      rg.closest('.form-group').classList.add('has-error');
+      valid = false;
+    } else {
+      if (nablSel.value === 'Yes') {
+        var cert = document.getElementById('nablCert');
+        if (!cert.files.length) { markError(cert); valid = false; }
+      }
+      if (nablSel.value === 'In Process') {
+        var appNum = document.getElementById('nablAppNum');
+        if (!appNum.value.trim()) { markError(appNum); valid = false; }
+      }
+    }
+    var lic = document.getElementById('licenseNum');
+    if (!lic.value.trim()) { markError(lic); valid = false; }
+    var licDoc = document.getElementById('licensDoc');
+    if (!licDoc.files.length) { markError(licDoc); valid = false; }
+  }
+
+  if (n === 5) {
+    ['bankName','accNum','accNumConfirm','ifsc'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (!el.value.trim()) { markError(el); valid = false; }
+    });
+    var a1 = document.getElementById('accNum');
+    var a2 = document.getElementById('accNumConfirm');
+    if (a1.value && a2.value && a1.value !== a2.value) {
+      markError(a2); valid = false;
+    }
+  }
+
+  return valid;
+}
+
+function nextStep() {
+  if (!validateStep(currentStep)) return;
+  if (currentStep < totalSteps) {
+    currentStep++;
+    showStep(currentStep);
+  }
+}
+
+function prevStep() {
+  if (currentStep > 1) {
+    currentStep--;
+    showStep(currentStep);
+  }
+}
+
+function handleNabl() {
+  var sel = document.querySelector('input[name="nabl"]:checked');
+  var certWrap = document.getElementById('nablCertWrap');
+  var appWrap = document.getElementById('nablAppWrap');
+  certWrap.classList.remove('visible');
+  appWrap.classList.remove('visible');
+  if (sel) {
+    if (sel.value === 'Yes') certWrap.classList.add('visible');
+    if (sel.value === 'In Process') appWrap.classList.add('visible');
+  }
+}
+
+function showFileName(input, textId) {
+  var textEl = document.getElementById(textId);
+  if (input.files.length) {
+    textEl.textContent = input.files[0].name;
+    textEl.classList.add('selected');
+  } else {
+    textEl.textContent = textEl.dataset.default || 'Choose file...';
+    textEl.classList.remove('selected');
+  }
+}
+
+function getChecked(name) {
+  var vals = [];
+  document.querySelectorAll('input[name="'+name+'"]:checked').forEach(function(cb) {
+    vals.push(cb.value);
+  });
+  return vals.join(', ') || 'None';
+}
+
+function getRadio(name) {
+  var sel = document.querySelector('input[name="'+name+'"]:checked');
+  return sel ? sel.value : 'Not specified';
+}
+
+function gv(id) {
+  var el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+function submitForm() {
+  if (!validateStep(5)) return;
+
+  var nablStatus = getRadio('nabl');
+  var nablExtra = '';
+  if (nablStatus === 'Yes') nablExtra = '\nNABL Certificate: Uploaded';
+  if (nablStatus === 'In Process') nablExtra = '\nNABL Application #: ' + gv('nablAppNum');
+
+  var msg =
+    '--- HEMATO LAB ONBOARDING ---\n\n' +
+    '== Lab Information ==\n' +
+    'Lab Name: ' + gv('labName') + '\n' +
+    'Owner/Manager: ' + gv('ownerName') + '\n' +
+    'Phone: ' + gv('phone') + '\n' +
+    'Email: ' + gv('email') + '\n' +
+    'Lab Type: ' + gv('labType') + '\n' +
+    'Established: ' + gv('estYear') + '\n\n' +
+    '== Location ==\n' +
+    'Address: ' + gv('fullAddress') + '\n' +
+    'City: ' + gv('city') + '\n' +
+    'Pincode: ' + gv('pincode') + '\n' +
+    'Maps: ' + (gv('mapsLink') || 'N/A') + '\n' +
+    'Service Radius: ' + gv('serviceRadius') + ' km\n\n' +
+    '== Certifications ==\n' +
+    'NABL: ' + nablStatus + nablExtra + '\n' +
+    'License #: ' + gv('licenseNum') + '\n' +
+    'License Doc: Uploaded\n\n' +
+    '== Services ==\n' +
+    'Tests: ' + getChecked('tests') + '\n' +
+    'Home Collection: ' + getRadio('homeCollection') + '\n' +
+    'Sample Pickup: ' + getRadio('samplePickup') + '\n' +
+    'Hours: ' + gv('hoursFrom') + ' - ' + gv('hoursTo') + '\n' +
+    'Working Days: ' + getChecked('days') + '\n\n' +
+    '== Pricing & Bank ==\n' +
+    'Price Range: ' + (gv('priceRange') || 'N/A') + '\n' +
+    'GST: ' + (gv('gstNum') || 'N/A') + '\n' +
+    'Bank: ' + gv('bankName') + '\n' +
+    'Account: ' + gv('accNum') + '\n' +
+    'IFSC: ' + gv('ifsc');
+
+  // TODO: Replace with API call to POST /api/hemato/lab/apply
+  window.open('https://wa.me/917993135689?text=' + encodeURIComponent(msg), '_blank');
+
+  // Show success screen
+  document.querySelectorAll('.step-content').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.getElementById('successScreen').classList.add('visible');
+  document.querySelector('.stepper').style.display = 'none';
+  document.querySelector('.page-title').innerHTML =
+    '<h1>Thank <span>You!</span></h1><p>Your application has been sent.</p>';
+}
+</script>
+</body>
+</html>

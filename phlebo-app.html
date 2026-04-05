@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Hemato Phlebo Partner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--primary:#DC2626;--primary-light:#FEE2E2;--primary-dark:#991B1B;
+--accent:#059669;--accent-light:#D1FAE5;--accent-dark:#065F46;
+--bg:#F8FAFC;--surface:#FFFFFF;--text:#0F172A;--text2:#64748B;--text3:#94A3B8;
+--border:#E2E8F0;--shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+--shadow-md:0 4px 12px rgba(0,0,0,.08);--shadow-lg:0 10px 25px rgba(0,0,0,.12);
+--radius:12px;--radius-sm:8px;--radius-lg:16px;
+--amber:#F59E0B;--amber-light:#FEF3C7;
+--blue:#3B82F6;--blue-light:#DBEAFE;
+--purple:#8B5CF6;--purple-light:#EDE9FE;
+--green:#059669;--green-light:#D1FAE5;
+--bottom-nav-h:60px;--header-h:56px;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh;overflow-x:hidden}
+h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700}
+button{cursor:pointer;font-family:'Inter',sans-serif;border:none;outline:none}
+input{font-family:'Inter',sans-serif;outline:none}
+.hide{display:none!important}
+
+/* ===== LOGIN SCREEN ===== */
+#loginScreen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#DC2626 0%,#991B1B 100%);padding:24px;position:relative;overflow:hidden}
+#loginScreen::before{content:'';position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.06);top:-80px;right:-80px}
+#loginScreen::after{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.04);bottom:-40px;left:-60px}
+.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:8px;z-index:1}
+.login-logo i{font-size:36px;color:#fff}
+.login-logo span{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:#fff}
+.login-sub{color:rgba(255,255,255,.85);font-size:14px;margin-bottom:40px;z-index:1;font-weight:500}
+.login-card{background:#fff;border-radius:var(--radius-lg);padding:32px 24px;width:100%;max-width:380px;z-index:1;box-shadow:var(--shadow-lg)}
+.login-card h2{font-size:20px;margin-bottom:4px;color:var(--text)}
+.login-card p{color:var(--text2);font-size:13px;margin-bottom:24px}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
+.form-input{width:100%;height:48px;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:0 14px;font-size:15px;transition:border .2s}
+.form-input:focus{border-color:var(--primary)}
+.phone-input-wrap{display:flex;gap:8px}
+.phone-prefix{width:64px;height:48px;border:1.5px solid var(--border);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;color:var(--text);background:var(--bg)}
+.phone-input-wrap .form-input{flex:1}
+.btn-primary{width:100%;height:50px;background:var(--primary);color:#fff;border-radius:var(--radius);font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s,transform .1s}
+.btn-primary:active{transform:scale(.98);background:var(--primary-dark)}
+.btn-primary:disabled{opacity:.5;pointer-events:none}
+.otp-inputs{display:flex;gap:10px;justify-content:center;margin-bottom:24px}
+.otp-inputs input{width:46px;height:52px;border:1.5px solid var(--border);border-radius:var(--radius-sm);text-align:center;font-size:20px;font-weight:700;transition:border .2s}
+.otp-inputs input:focus{border-color:var(--primary)}
+.resend-row{text-align:center;font-size:13px;color:var(--text2);margin-bottom:20px}
+.resend-row a{color:var(--primary);font-weight:600;text-decoration:none}
+.login-error{color:var(--primary);font-size:13px;text-align:center;margin-bottom:12px;min-height:18px}
+
+/* ===== APP SHELL ===== */
+#appShell{display:none;min-height:100vh;background:var(--bg)}
+.app-header{position:fixed;top:0;left:0;right:0;height:var(--header-h);background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-logo{display:flex;align-items:center;gap:6px}
+.header-logo i{font-size:20px;color:var(--primary)}
+.header-logo span{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:var(--primary)}
+.header-name{font-size:12px;color:var(--text2);font-weight:500}
+.header-right{display:flex;align-items:center;gap:12px}
+.online-badge{font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;display:flex;align-items:center;gap:5px}
+.online-badge.is-online{background:var(--accent-light);color:var(--accent-dark)}
+.online-badge.is-offline{background:#FEE2E2;color:var(--primary-dark)}
+.online-badge .dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.online-badge.is-online .dot{background:var(--accent);animation:pulse 2s infinite}
+.online-badge.is-offline .dot{background:var(--primary)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.notif-btn{width:36px;height:36px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:16px;position:relative}
+.notif-btn .badge{position:absolute;top:2px;right:2px;width:8px;height:8px;background:var(--primary);border-radius:50%;border:2px solid #fff}
+
+.app-content{padding-top:var(--header-h);padding-bottom:calc(var(--bottom-nav-h) + 12px);min-height:100vh}
+.tab-content{display:none;padding:16px}
+.tab-content.active{display:block}
+
+/* Bottom Nav */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:var(--bottom-nav-h);background:#fff;border-top:1px solid var(--border);display:flex;z-index:100;box-shadow:0 -2px 8px rgba(0,0,0,.04)}
+.bottom-nav button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;color:var(--text3);font-size:10px;font-weight:600;transition:color .2s;min-height:44px}
+.bottom-nav button i{font-size:20px;transition:color .2s}
+.bottom-nav button.active{color:var(--primary)}
+.bottom-nav button .nav-badge{position:absolute;top:6px;margin-left:16px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--primary);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
+
+/* ===== ONLINE/OFFLINE TOGGLE ===== */
+.status-card{background:#fff;border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.status-card.offline{border:2px dashed var(--border)}
+.toggle-row{display:flex;align-items:center;justify-content:space-between}
+.toggle-label{display:flex;align-items:center;gap:12px}
+.toggle-label .icon-circle{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.toggle-label .icon-circle.on{background:var(--accent-light);color:var(--accent)}
+.toggle-label .icon-circle.off{background:var(--primary-light);color:var(--primary)}
+.toggle-label h3{font-size:16px}
+.toggle-label p{font-size:12px;color:var(--text2);margin-top:1px}
+.toggle-switch{width:62px;height:34px;background:var(--border);border-radius:17px;position:relative;cursor:pointer;transition:background .3s;flex-shrink:0}
+.toggle-switch.on{background:var(--accent)}
+.toggle-switch .knob{width:28px;height:28px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:left .3s;box-shadow:0 2px 4px rgba(0,0,0,.15)}
+.toggle-switch.on .knob{left:31px}
+.offline-msg{text-align:center;padding:32px 16px;color:var(--text2);font-size:14px}
+.offline-msg i{font-size:48px;color:var(--border);margin-bottom:12px;display:block}
+.offline-msg p{margin-top:8px;font-size:13px}
+
+/* ===== SUMMARY CARDS ===== */
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.summary-item{background:#fff;border-radius:var(--radius);padding:14px 12px;text-align:center;box-shadow:var(--shadow)}
+.summary-item .val{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--text)}
+.summary-item .lbl{font-size:11px;color:var(--text2);font-weight:500;margin-top:2px}
+.summary-item.green .val{color:var(--accent)}
+.summary-item.amber .val{color:var(--amber)}
+
+/* ===== ASSIGNMENT CARD ===== */
+.section-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.section-title i{color:var(--primary);font-size:13px}
+.assignment-card{background:#fff;border-radius:var(--radius-lg);padding:16px;margin-bottom:12px;box-shadow:var(--shadow);border-left:4px solid var(--primary)}
+.assignment-card.active{border-left-color:var(--blue)}
+.assignment-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.assignment-header h4{font-size:15px;font-weight:700}
+.assignment-header .slot{font-size:12px;color:var(--primary);font-weight:600;background:var(--primary-light);padding:3px 10px;border-radius:6px;white-space:nowrap}
+.assignment-meta{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.meta-row{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text2)}
+.meta-row i{width:16px;text-align:center;margin-top:2px;color:var(--text3);font-size:13px}
+.meta-row strong{color:var(--text);font-weight:600}
+.tests-badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.test-badge{font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;background:var(--blue-light);color:#1E40AF}
+.assignment-actions{display:flex;gap:8px}
+.btn-nav{flex:1;height:44px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;transition:transform .1s}
+.btn-nav:active{transform:scale(.97)}
+.btn-nav.outline{background:#fff;border:1.5px solid var(--border);color:var(--text)}
+.btn-nav.fill-primary{background:var(--primary);color:#fff}
+.btn-nav.fill-green{background:var(--accent);color:#fff}
+.btn-nav.fill-blue{background:var(--blue);color:#fff}
+.btn-nav.fill-purple{background:var(--purple);color:#fff}
+
+/* ===== UPCOMING LIST ===== */
+.upcoming-item{background:#fff;border-radius:var(--radius);padding:14px;margin-bottom:8px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px}
+.upcoming-item .time-block{min-width:54px;text-align:center;background:var(--bg);border-radius:var(--radius-sm);padding:6px 4px}
+.upcoming-item .time-block .t{font-size:13px;font-weight:700;color:var(--text)}
+.upcoming-item .time-block .ampm{font-size:10px;color:var(--text2)}
+.upcoming-info{flex:1;min-width:0}
+.upcoming-info h5{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.upcoming-info p{font-size:12px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.upcoming-dist{font-size:12px;color:var(--text2);font-weight:600;white-space:nowrap}
+
+/* ===== QUICK STATS ===== */
+.quick-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.quick-stat{background:#fff;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+.quick-stat .qs-label{font-size:11px;color:var(--text2);font-weight:500}
+.quick-stat .qs-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;margin-top:2px}
+.quick-stat .qs-sub{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* ===== ORDERS TAB ===== */
+.sub-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;-webkit-overflow-scrolling:touch}
+.sub-tabs::-webkit-scrollbar{display:none}
+.sub-tab{white-space:nowrap;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;background:var(--bg);color:var(--text2);border:1.5px solid var(--border);flex-shrink:0;min-height:36px;transition:all .2s}
+.sub-tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.sub-tab .count{display:inline-block;min-width:16px;height:16px;line-height:16px;text-align:center;border-radius:8px;font-size:10px;margin-left:4px;padding:0 4px}
+.sub-tab.active .count{background:rgba(255,255,255,.25);color:#fff}
+.sub-tab:not(.active) .count{background:var(--border);color:var(--text2)}
+
+.order-card{background:#fff;border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:var(--shadow);border-left:4px solid transparent}
+.order-card[data-status="assigned"]{border-left-color:var(--amber)}
+.order-card[data-status="collecting"]{border-left-color:var(--blue)}
+.order-card[data-status="transit"]{border-left-color:var(--purple)}
+.order-card[data-status="delivered"]{border-left-color:var(--green)}
+.order-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.order-id{font-size:12px;font-weight:700;color:var(--text2)}
+.order-earned{font-size:14px;font-weight:700;color:var(--accent)}
+.status-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:12px;text-transform:uppercase;letter-spacing:.3px}
+.status-badge.assigned{background:var(--amber-light);color:#92400E}
+.status-badge.collecting{background:var(--blue-light);color:#1E40AF}
+.status-badge.transit{background:var(--purple-light);color:#5B21B6}
+.status-badge.delivered{background:var(--green-light);color:var(--accent-dark)}
+.order-patient{font-size:14px;font-weight:700;margin-bottom:2px}
+.order-addr{font-size:12px;color:var(--text2);margin-bottom:6px;display:flex;align-items:center;gap:4px}
+.order-tests{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.order-tests span{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;background:var(--bg);color:var(--text2)}
+.order-footer{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text3);margin-bottom:10px}
+.order-actions{display:flex;gap:6px}
+.order-btn{height:38px;padding:0 14px;border-radius:var(--radius-sm);font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;transition:transform .1s}
+.order-btn:active{transform:scale(.97)}
+.order-btn.outline{background:#fff;border:1.5px solid var(--border);color:var(--text)}
+.order-btn.primary{background:var(--primary);color:#fff}
+.order-btn.green{background:var(--accent);color:#fff}
+.order-btn.blue{background:var(--blue);color:#fff}
+.order-btn.purple{background:var(--purple);color:#fff}
+
+/* ===== MAP TAB ===== */
+.map-visual{background:linear-gradient(135deg,#E0F2FE,#F0F9FF);border-radius:var(--radius-lg);padding:20px 16px;margin-bottom:16px;text-align:center;position:relative;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px dashed #BAE6FD}
+.map-visual i{font-size:48px;color:#38BDF8;margin-bottom:8px}
+.map-visual p{font-size:13px;color:var(--text2)}
+.route-summary{background:#fff;border-radius:var(--radius);padding:14px;margin-bottom:16px;box-shadow:var(--shadow)}
+.route-summary h4{font-size:14px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.route-stop{display:flex;align-items:flex-start;gap:10px;padding:8px 0;position:relative}
+.route-stop:not(:last-child)::after{content:'';position:absolute;left:13px;top:34px;bottom:-8px;width:2px;background:var(--border)}
+.route-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.route-dot.collect{background:var(--blue)}
+.route-dot.lab{background:var(--accent)}
+.route-stop-info h5{font-size:13px;font-weight:600}
+.route-stop-info p{font-size:11px;color:var(--text2)}
+.lab-card{background:#fff;border-radius:var(--radius);padding:14px;margin-bottom:8px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px}
+.lab-icon{width:42px;height:42px;border-radius:var(--radius-sm);background:var(--accent-light);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:18px;flex-shrink:0}
+.lab-info{flex:1;min-width:0}
+.lab-info h5{font-size:14px;font-weight:600}
+.lab-info p{font-size:12px;color:var(--text2)}
+.lab-dist{font-size:12px;color:var(--text2);font-weight:600;white-space:nowrap}
+.lab-nav-btn{width:38px;height:38px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+
+/* ===== EARNINGS TAB ===== */
+.earnings-hero{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);border-radius:var(--radius-lg);padding:24px 20px;margin-bottom:16px;color:#fff}
+.earnings-hero .label{font-size:12px;opacity:.8;font-weight:500}
+.earnings-hero .amount{font-family:'Plus Jakarta Sans',sans-serif;font-size:36px;font-weight:800;margin:4px 0}
+.earnings-hero .sub{font-size:13px;opacity:.7}
+.earnings-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.earn-card{background:#fff;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+.earn-card .ec-label{font-size:11px;color:var(--text2);font-weight:500}
+.earn-card .ec-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;margin-top:2px}
+.earn-card .ec-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.daily-breakdown{background:#fff;border-radius:var(--radius);padding:14px;margin-bottom:16px;box-shadow:var(--shadow)}
+.daily-breakdown h4{font-size:14px;font-weight:700;margin-bottom:12px}
+.day-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.day-row:last-child{border:none}
+.day-row .day-name{font-size:13px;font-weight:600;min-width:50px}
+.day-row .day-bar{flex:1;margin:0 12px;height:6px;background:var(--bg);border-radius:3px;overflow:hidden}
+.day-row .day-bar .fill{height:100%;border-radius:3px;background:var(--primary)}
+.day-row .day-amt{font-size:13px;font-weight:700;min-width:60px;text-align:right}
+.day-row .day-count{font-size:11px;color:var(--text2);min-width:30px;text-align:right}
+.payout-card{background:#fff;border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow);border:1.5px solid var(--accent-light)}
+.payout-card h4{font-size:14px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}
+.payout-amount{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:var(--accent)}
+.payout-date{font-size:12px;color:var(--text2);margin-top:4px}
+.payment-history{background:#fff;border-radius:var(--radius);padding:14px;margin-bottom:16px;box-shadow:var(--shadow)}
+.payment-history h4{font-size:14px;font-weight:700;margin-bottom:12px}
+.pay-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.pay-item:last-child{border:none}
+.pay-item .pay-date{font-size:13px;font-weight:500}
+.pay-item .pay-mode{font-size:11px;color:var(--text2)}
+.pay-item .pay-amt{font-size:14px;font-weight:700;color:var(--accent)}
+.rate-info{background:var(--amber-light);border-radius:var(--radius);padding:14px;font-size:13px;color:#92400E;display:flex;align-items:center;gap:10px}
+.rate-info i{font-size:18px}
+
+/* ===== COLLECTION FLOW OVERLAY ===== */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:flex-end;justify-content:center}
+.overlay.show{display:flex}
+.flow-sheet{background:#fff;border-radius:var(--radius-lg) var(--radius-lg) 0 0;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;padding:20px 16px 32px;position:relative;animation:sheetUp .3s ease}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.flow-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.flow-header h3{font-size:17px}
+.flow-close{width:32px;height:32px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:14px}
+.flow-steps{display:flex;justify-content:center;gap:6px;margin-bottom:20px}
+.flow-step-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s}
+.flow-step-dot.active{width:24px;border-radius:4px;background:var(--primary)}
+.flow-step-dot.done{background:var(--accent)}
+.flow-body{min-height:200px}
+.flow-step{display:none}
+.flow-step.active{display:block}
+.verify-patient{text-align:center;padding:16px 0}
+.verify-patient .avatar{width:64px;height:64px;border-radius:50%;background:var(--primary-light);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px;color:var(--primary);font-weight:700}
+.verify-patient h4{font-size:18px;margin-bottom:4px}
+.verify-patient p{font-size:13px;color:var(--text2);margin-bottom:20px}
+.checkbox-row{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--bg);border-radius:var(--radius-sm);margin-bottom:8px;cursor:pointer;min-height:44px;user-select:none}
+.checkbox-row input[type=checkbox]{width:20px;height:20px;accent-color:var(--primary);flex-shrink:0}
+.checkbox-row label{font-size:14px;font-weight:500;cursor:pointer}
+.tube-item{display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg);border-radius:var(--radius-sm);margin-bottom:8px}
+.tube-color{width:32px;height:32px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:700}
+.tube-color.red{background:#DC2626}
+.tube-color.purple{background:#8B5CF6}
+.tube-color.grey{background:#6B7280}
+.tube-color.blue{background:#3B82F6}
+.tube-color.green{background:#059669}
+.tube-color.yellow{background:#F59E0B}
+.tube-info{flex:1}
+.tube-info h5{font-size:14px;font-weight:600}
+.tube-info p{font-size:12px;color:var(--text2)}
+.tube-item input[type=checkbox]{width:20px;height:20px;accent-color:var(--accent)}
+.flow-summary{background:var(--bg);border-radius:var(--radius);padding:16px;margin-bottom:16px}
+.flow-summary .fs-row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px}
+.flow-summary .fs-row .fs-label{color:var(--text2)}
+.flow-summary .fs-row .fs-val{font-weight:600}
+.flow-footer{display:flex;gap:8px;margin-top:20px}
+.flow-btn{flex:1;height:48px;border-radius:var(--radius);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px}
+.flow-btn.secondary{background:var(--bg);color:var(--text)}
+.flow-btn.primary{background:var(--primary);color:#fff}
+.flow-btn.green{background:var(--accent);color:#fff}
+.flow-btn:active{transform:scale(.97)}
+
+/* Delivered timeline */
+.timeline{padding:8px 0}
+.timeline-item{display:flex;gap:12px;padding-bottom:16px;position:relative}
+.timeline-item:not(:last-child)::after{content:'';position:absolute;left:13px;top:28px;bottom:0;width:2px;background:var(--border)}
+.timeline-dot{width:28px;height:28px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.timeline-dot i{font-size:11px;color:var(--accent)}
+.timeline-text h5{font-size:13px;font-weight:600}
+.timeline-text p{font-size:11px;color:var(--text2)}
+
+/* Detail overlay */
+.detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:flex-end;justify-content:center}
+.detail-overlay.show{display:flex}
+
+/* Confirmation toast */
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:12px 24px;border-radius:var(--radius);font-size:14px;font-weight:600;z-index:300;display:none;align-items:center;gap:8px;box-shadow:var(--shadow-lg);white-space:nowrap}
+.toast.show{display:flex;animation:toastIn .3s ease}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* Responsive */
+@media(min-width:480px){
+  .app-content{max-width:480px;margin:0 auto}
+  .bottom-nav{max-width:480px;left:50%;transform:translateX(-50%)}
+  .app-header{max-width:480px;left:50%;transform:translateX(-50%)}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="loginScreen">
+  <div class="login-logo"><i class="fas fa-droplet"></i><span>Hemato</span></div>
+  <div class="login-sub">Phlebo Partner App</div>
+  <div class="login-card">
+    <!-- Phone Step -->
+    <div id="phoneStep">
+      <h2>Welcome, Partner</h2>
+      <p>Login with your registered phone number</p>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <div class="phone-input-wrap">
+          <div class="phone-prefix">+91</div>
+          <input type="tel" id="phoneInput" class="form-input" placeholder="Enter mobile number" maxlength="10" value="9876543210">
+        </div>
+      </div>
+      <button class="btn-primary" id="sendOtpBtn"><i class="fas fa-paper-plane"></i> Send OTP</button>
+    </div>
+    <!-- OTP Step -->
+    <div id="otpStep" class="hide">
+      <h2>Enter OTP</h2>
+      <p>We sent a 6-digit code to <span id="otpPhone"></span></p>
+      <div class="otp-inputs" id="otpInputs">
+        <input type="tel" maxlength="1"><input type="tel" maxlength="1"><input type="tel" maxlength="1">
+        <input type="tel" maxlength="1"><input type="tel" maxlength="1"><input type="tel" maxlength="1">
+      </div>
+      <div class="login-error" id="otpError"></div>
+      <div class="resend-row">Didn't receive? <a href="#" id="resendOtp">Resend OTP</a></div>
+      <button class="btn-primary" id="verifyOtpBtn" disabled><i class="fas fa-check"></i> Verify & Login</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== APP SHELL ===== -->
+<div id="appShell">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="header-logo"><i class="fas fa-droplet"></i><span>Phlebo</span></div>
+      <span class="header-name" id="phleboName">Rajesh K.</span>
+    </div>
+    <div class="header-right">
+      <div class="online-badge is-offline" id="headerBadge"><span class="dot"></span><span id="headerBadgeText">Offline</span></div>
+      <button class="notif-btn"><i class="fas fa-bell"></i><span class="badge"></span></button>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="app-content">
+    <!-- HOME TAB -->
+    <div class="tab-content active" id="tabHome">
+      <!-- Toggle -->
+      <div class="status-card offline" id="statusCard">
+        <div class="toggle-row">
+          <div class="toggle-label">
+            <div class="icon-circle off" id="toggleIcon"><i class="fas fa-power-off"></i></div>
+            <div>
+              <h3 id="toggleTitle">You're Offline</h3>
+              <p id="toggleSub">Go online to receive orders</p>
+            </div>
+          </div>
+          <div class="toggle-switch" id="onlineToggle" role="button" tabindex="0" aria-label="Go online">
+            <div class="knob"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Offline Message -->
+      <div id="offlineContent">
+        <div class="offline-msg">
+          <i class="fas fa-moon"></i>
+          <h3>You're currently offline</h3>
+          <p>Toggle the switch above to start receiving collection assignments.</p>
+        </div>
+      </div>
+
+      <!-- Online Content -->
+      <div id="onlineContent" class="hide">
+        <div class="summary-grid">
+          <div class="summary-item green"><div class="val">4</div><div class="lbl">Done</div></div>
+          <div class="summary-item amber"><div class="val">3</div><div class="lbl">Pending</div></div>
+          <div class="summary-item"><div class="val">\u20B9950</div><div class="lbl">Earned Today</div></div>
+        </div>
+
+        <div class="section-title"><i class="fas fa-bolt"></i> Current Assignment</div>
+        <div class="assignment-card" id="currentAssignment">
+          <div class="assignment-header">
+            <h4>Rahul M.</h4>
+            <span class="slot"><i class="far fa-clock"></i> 8:00 - 9:00 AM</span>
+          </div>
+          <div class="tests-badges">
+            <span class="test-badge">CBC</span>
+            <span class="test-badge">Lipid Profile</span>
+          </div>
+          <div class="assignment-meta">
+            <div class="meta-row"><i class="fas fa-location-dot"></i><span>Flat 302, My Home Hub, Madhapur</span></div>
+            <div class="meta-row"><i class="fas fa-route"></i><span><strong>2.3 km</strong> away</span></div>
+            <div class="meta-row"><i class="fas fa-flask"></i><span>Drop at: <strong>LifeCare Diagnostics</strong>, Banjara Hills</span></div>
+          </div>
+          <div class="assignment-actions">
+            <button class="btn-nav outline" onclick="openMaps(17.4435,78.3772)"><i class="fas fa-diamond-turn-right"></i> Navigate</button>
+            <button class="btn-nav fill-primary" onclick="startCollection('HMT-0042')"><i class="fas fa-vial"></i> Start Collection</button>
+          </div>
+        </div>
+
+        <div class="section-title"><i class="fas fa-list-check"></i> Upcoming</div>
+        <div class="upcoming-item">
+          <div class="time-block"><div class="t">9:30</div><div class="ampm">AM</div></div>
+          <div class="upcoming-info"><h5>Priya S.</h5><p>HbA1c, Thyroid Panel &bull; Gachibowli</p></div>
+          <div class="upcoming-dist">3.8 km</div>
+        </div>
+        <div class="upcoming-item">
+          <div class="time-block"><div class="t">10:15</div><div class="ampm">AM</div></div>
+          <div class="upcoming-info"><h5>Anil K.</h5><p>Liver Function, KFT &bull; Kondapur</p></div>
+          <div class="upcoming-dist">5.1 km</div>
+        </div>
+        <div class="upcoming-item">
+          <div class="time-block"><div class="t">11:00</div><div class="ampm">AM</div></div>
+          <div class="upcoming-info"><h5>Meena R.</h5><p>CBC, ESR, CRP &bull; Madhapur</p></div>
+          <div class="upcoming-dist">1.2 km</div>
+        </div>
+
+        <div class="quick-stats">
+          <div class="quick-stat"><div class="qs-label">This Week</div><div class="qs-val">22</div><div class="qs-sub">collections</div></div>
+          <div class="quick-stat"><div class="qs-label">This Month</div><div class="qs-val">\u20B918,500</div><div class="qs-sub">earnings so far</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDERS TAB -->
+    <div class="tab-content" id="tabOrders">
+      <div class="sub-tabs" id="orderSubTabs">
+        <button class="sub-tab active" data-filter="assigned">Assigned <span class="count">3</span></button>
+        <button class="sub-tab" data-filter="collecting">Collecting <span class="count">1</span></button>
+        <button class="sub-tab" data-filter="transit">In Transit <span class="count">0</span></button>
+        <button class="sub-tab" data-filter="delivered">Delivered <span class="count">8</span></button>
+        <button class="sub-tab" data-filter="all">All <span class="count">12</span></button>
+      </div>
+      <div id="ordersList"></div>
+    </div>
+
+    <!-- MAP TAB -->
+    <div class="tab-content" id="tabMap">
+      <div class="map-visual">
+        <i class="fas fa-map-location-dot"></i>
+        <p>Live map view requires location access.<br><strong>Use the buttons below to navigate.</strong></p>
+      </div>
+
+      <div class="section-title"><i class="fas fa-route"></i> Today's Route</div>
+      <div class="route-summary">
+        <div class="route-stop">
+          <div class="route-dot collect">1</div>
+          <div class="route-stop-info"><h5>Rahul M. - Madhapur</h5><p>CBC, Lipid Profile &bull; 8:00 - 9:00 AM</p></div>
+        </div>
+        <div class="route-stop">
+          <div class="route-dot collect">2</div>
+          <div class="route-stop-info"><h5>Priya S. - Gachibowli</h5><p>HbA1c, Thyroid Panel &bull; 9:30 - 10:30 AM</p></div>
+        </div>
+        <div class="route-stop">
+          <div class="route-dot lab"><i class="fas fa-flask" style="font-size:11px"></i></div>
+          <div class="route-stop-info"><h5>LifeCare Diagnostics</h5><p>Drop-off: 2 samples &bull; Banjara Hills</p></div>
+        </div>
+        <div class="route-stop">
+          <div class="route-dot collect">3</div>
+          <div class="route-stop-info"><h5>Anil K. - Kondapur</h5><p>LFT, KFT &bull; 10:15 - 11:00 AM</p></div>
+        </div>
+        <div class="route-stop">
+          <div class="route-dot collect">4</div>
+          <div class="route-stop-info"><h5>Meena R. - Madhapur</h5><p>CBC, ESR, CRP &bull; 11:00 - 11:45 AM</p></div>
+        </div>
+        <div class="route-stop">
+          <div class="route-dot lab"><i class="fas fa-flask" style="font-size:11px"></i></div>
+          <div class="route-stop-info"><h5>QuickTest Path Lab</h5><p>Drop-off: 2 samples &bull; Madhapur</p></div>
+        </div>
+      </div>
+
+      <div class="section-title"><i class="fas fa-hospital"></i> Connected Labs</div>
+      <div class="lab-card">
+        <div class="lab-icon"><i class="fas fa-flask"></i></div>
+        <div class="lab-info"><h5>LifeCare Diagnostics</h5><p>Banjara Hills &bull; 2.3 km</p></div>
+        <button class="lab-nav-btn" onclick="openMaps(17.4156,78.4347)"><i class="fas fa-diamond-turn-right"></i></button>
+      </div>
+      <div class="lab-card">
+        <div class="lab-icon"><i class="fas fa-flask"></i></div>
+        <div class="lab-info"><h5>MedScan Labs</h5><p>Jubilee Hills &bull; 4.1 km</p></div>
+        <button class="lab-nav-btn" onclick="openMaps(17.4310,78.4070)"><i class="fas fa-diamond-turn-right"></i></button>
+      </div>
+      <div class="lab-card">
+        <div class="lab-icon"><i class="fas fa-flask"></i></div>
+        <div class="lab-info"><h5>QuickTest Path Lab</h5><p>Madhapur &bull; 1.5 km</p></div>
+        <button class="lab-nav-btn" onclick="openMaps(17.4486,78.3908)"><i class="fas fa-diamond-turn-right"></i></button>
+      </div>
+    </div>
+
+    <!-- EARNINGS TAB -->
+    <div class="tab-content" id="tabEarnings">
+      <div class="earnings-hero">
+        <div class="label">Today's Earnings</div>
+        <div class="amount">\u20B9950</div>
+        <div class="sub">5 collections completed</div>
+      </div>
+
+      <div class="earnings-row">
+        <div class="earn-card"><div class="ec-label">This Week</div><div class="ec-val">\u20B94,200</div><div class="ec-sub">22 collections</div></div>
+        <div class="earn-card"><div class="ec-label">This Month</div><div class="ec-val">\u20B918,500</div><div class="ec-sub">95 collections</div></div>
+      </div>
+
+      <div class="daily-breakdown">
+        <h4><i class="fas fa-chart-bar" style="color:var(--primary);margin-right:4px"></i> Last 7 Days</h4>
+        <div class="day-row"><span class="day-name">Today</span><div class="day-bar"><div class="fill" style="width:63%"></div></div><span class="day-amt">\u20B9950</span><span class="day-count">5</span></div>
+        <div class="day-row"><span class="day-name">Fri</span><div class="day-bar"><div class="fill" style="width:53%"></div></div><span class="day-amt">\u20B9800</span><span class="day-count">4</span></div>
+        <div class="day-row"><span class="day-name">Thu</span><div class="day-bar"><div class="fill" style="width:47%"></div></div><span class="day-amt">\u20B9700</span><span class="day-count">4</span></div>
+        <div class="day-row"><span class="day-name">Wed</span><div class="day-bar"><div class="fill" style="width:60%"></div></div><span class="day-amt">\u20B9900</span><span class="day-count">5</span></div>
+        <div class="day-row"><span class="day-name">Tue</span><div class="day-bar"><div class="fill" style="width:40%"></div></div><span class="day-amt">\u20B9600</span><span class="day-count">3</span></div>
+        <div class="day-row"><span class="day-name">Mon</span><div class="day-bar"><div class="fill" style="width:33%"></div></div><span class="day-amt">\u20B9500</span><span class="day-count">3</span></div>
+        <div class="day-row"><span class="day-name">Sun</span><div class="day-bar"><div class="fill" style="width:0%"></div></div><span class="day-amt">\u20B90</span><span class="day-count">0</span></div>
+      </div>
+
+      <div class="payout-card">
+        <h4><i class="fas fa-wallet"></i> Pending Payout</h4>
+        <div class="payout-amount">\u20B912,300</div>
+        <div class="payout-date">Next payout: Apr 7, 2026 &bull; Bank transfer</div>
+      </div>
+
+      <div class="payment-history">
+        <h4>Payment History</h4>
+        <div class="pay-item"><div><div class="pay-date">Mar 31, 2026</div><div class="pay-mode">Bank Transfer &bull; HDFC ****4521</div></div><div class="pay-amt">\u20B914,200</div></div>
+        <div class="pay-item"><div><div class="pay-date">Mar 15, 2026</div><div class="pay-mode">Bank Transfer &bull; HDFC ****4521</div></div><div class="pay-amt">\u20B913,800</div></div>
+        <div class="pay-item"><div><div class="pay-date">Feb 28, 2026</div><div class="pay-mode">Bank Transfer &bull; HDFC ****4521</div></div><div class="pay-amt">\u20B915,100</div></div>
+      </div>
+
+      <div class="rate-info">
+        <i class="fas fa-info-circle"></i>
+        <span>\u20B9150 - \u20B9300 per collection based on distance and test complexity.</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <button class="active" data-tab="tabHome"><i class="fas fa-house"></i><span>Home</span></button>
+    <button data-tab="tabOrders" style="position:relative"><i class="fas fa-clipboard-list"></i><span>Orders</span><span class="nav-badge" id="ordersBadge">4</span></button>
+    <button data-tab="tabMap"><i class="fas fa-map-location-dot"></i><span>Map</span></button>
+    <button data-tab="tabEarnings"><i class="fas fa-indian-rupee-sign"></i><span>Earnings</span></button>
+  </nav>
+</div>
+
+<!-- ===== COLLECTION FLOW OVERLAY ===== -->
+<div class="overlay" id="collectionOverlay">
+  <div class="flow-sheet">
+    <div class="flow-header">
+      <h3 id="flowTitle">Start Collection</h3>
+      <button class="flow-close" onclick="closeFlow()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="flow-steps">
+      <div class="flow-step-dot active" data-step="0"></div>
+      <div class="flow-step-dot" data-step="1"></div>
+      <div class="flow-step-dot" data-step="2"></div>
+      <div class="flow-step-dot" data-step="3"></div>
+    </div>
+    <div class="flow-body" id="flowBody">
+      <!-- Step 1: Verify Patient -->
+      <div class="flow-step active" data-step="0">
+        <div class="verify-patient">
+          <div class="avatar" id="flowPatientAvatar">R</div>
+          <h4 id="flowPatientName">Rahul M.</h4>
+          <p id="flowPatientAddr">Flat 302, My Home Hub, Madhapur</p>
+        </div>
+        <div class="checkbox-row" onclick="toggleCheck(this)">
+          <input type="checkbox" id="chkIdentity">
+          <label for="chkIdentity">Patient identity verified (ID/Aadhaar checked)</label>
+        </div>
+        <div class="checkbox-row" onclick="toggleCheck(this)">
+          <input type="checkbox" id="chkFasting">
+          <label for="chkFasting">Fasting status confirmed with patient</label>
+        </div>
+      </div>
+      <!-- Step 2: Collect Samples -->
+      <div class="flow-step" data-step="1">
+        <h4 style="font-size:15px;margin-bottom:4px">Collect Samples</h4>
+        <p style="font-size:12px;color:var(--text2);margin-bottom:14px">Tick each tube after collection</p>
+        <div id="flowTubes"></div>
+      </div>
+      <!-- Step 3: Label & Pack -->
+      <div class="flow-step" data-step="2">
+        <h4 style="font-size:15px;margin-bottom:4px">Label & Pack Samples</h4>
+        <p style="font-size:12px;color:var(--text2);margin-bottom:14px">Ensure all samples are properly labeled and packed</p>
+        <div class="checkbox-row" onclick="toggleCheck(this)">
+          <input type="checkbox" id="chkLabeled">
+          <label for="chkLabeled">All sample tubes labeled with patient details & barcode</label>
+        </div>
+        <div class="checkbox-row" onclick="toggleCheck(this)">
+          <input type="checkbox" id="chkPacked">
+          <label for="chkPacked">Samples packed in cold chain bag</label>
+        </div>
+        <div class="checkbox-row" onclick="toggleCheck(this)">
+          <input type="checkbox" id="chkSealed">
+          <label for="chkSealed">Transport bag sealed properly</label>
+        </div>
+      </div>
+      <!-- Step 4: Confirm -->
+      <div class="flow-step" data-step="3">
+        <h4 style="font-size:15px;margin-bottom:4px">Confirm Collection</h4>
+        <p style="font-size:12px;color:var(--text2);margin-bottom:14px">Review details before confirming</p>
+        <div class="flow-summary" id="flowSummary"></div>
+      </div>
+    </div>
+    <div class="flow-footer">
+      <button class="flow-btn secondary" id="flowBack" onclick="flowPrev()"><i class="fas fa-arrow-left"></i> Back</button>
+      <button class="flow-btn primary" id="flowNext" onclick="flowNext()">Next <i class="fas fa-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- Delivered Detail Overlay -->
+<div class="detail-overlay" id="detailOverlay">
+  <div class="flow-sheet">
+    <div class="flow-header">
+      <h3 id="detailTitle">Order Details</h3>
+      <button class="flow-close" onclick="closeDetail()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div id="detailBody"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastText"></span></div>
+
+<script>
+// ===== MOCK DATA =====
+// TODO: Replace with API calls to backend
+const PHLEBO = {
+  name: 'Rajesh Kumar',
+  shortName: 'Rajesh K.',
+  phone: '9876543210',
+  zones: ['Madhapur', 'Gachibowli', 'Kondapur']
+};
+
+// TODO: Fetch from /api/phlebo/orders
+let orders = [
+  {id:'HMT-0042',patient:'Rahul M.',address:'Flat 302, My Home Hub, Madhapur',tests:['CBC','Lipid Profile'],tubes:[{test:'CBC',tube:'Purple EDTA',color:'purple'},{test:'Lipid Profile',tube:'Red SST',color:'red'}],slot:'8:00 - 9:00 AM',lab:'LifeCare Diagnostics',labArea:'Banjara Hills',status:'assigned',amount:200,distance:'2.3 km',lat:17.4435,lng:78.3772,labLat:17.4156,labLng:78.4347},
+  {id:'HMT-0043',patient:'Priya S.',address:'Villa 12, Aparna Serene, Gachibowli',tests:['HbA1c','Thyroid Panel'],tubes:[{test:'HbA1c',tube:'Purple EDTA',color:'purple'},{test:'T3',tube:'Red SST',color:'red'},{test:'T4/TSH',tube:'Red SST',color:'red'}],slot:'9:30 - 10:30 AM',lab:'LifeCare Diagnostics',labArea:'Banjara Hills',status:'assigned',amount:250,distance:'3.8 km',lat:17.4400,lng:78.3490,labLat:17.4156,labLng:78.4347},
+  {id:'HMT-0044',patient:'Anil K.',address:'402, Prestige Meridian, Kondapur',tests:['LFT','KFT'],tubes:[{test:'LFT',tube:'Red SST',color:'red'},{test:'KFT',tube:'Red SST',color:'red'},{test:'Electrolytes',tube:'Green Heparin',color:'green'}],slot:'10:15 - 11:00 AM',lab:'MedScan Labs',labArea:'Jubilee Hills',status:'assigned',amount:200,distance:'5.1 km',lat:17.4600,lng:78.3700,labLat:17.4310,labLng:78.4070},
+  {id:'HMT-0041',patient:'Suresh B.',address:'Flat 501, Cyber Heights, Madhapur',tests:['CBC','ESR'],tubes:[{test:'CBC',tube:'Purple EDTA',color:'purple'},{test:'ESR',tube:'Blue Citrate',color:'blue'}],slot:'7:00 - 8:00 AM',lab:'QuickTest Path Lab',labArea:'Madhapur',status:'collecting',amount:180,distance:'1.1 km',lat:17.4490,lng:78.3900,labLat:17.4486,labLng:78.3908},
+  {id:'HMT-0035',patient:'Lakshmi D.',address:'203, Manjeera Majestic, Kukatpally',tests:['CBC','Blood Sugar'],tubes:[{test:'CBC',tube:'Purple EDTA',color:'purple'},{test:'Blood Sugar',tube:'Grey Fluoride',color:'grey'}],slot:'6:30 - 7:30 AM',lab:'LifeCare Diagnostics',labArea:'Banjara Hills',status:'delivered',amount:200,distance:'6.2 km',lat:17.4947,lng:78.3996,labLat:17.4156,labLng:78.4347},
+  {id:'HMT-0034',patient:'Vikram R.',address:'101, Rainbow Vistas, Hitech City',tests:['Thyroid Panel'],tubes:[{test:'TSH',tube:'Red SST',color:'red'}],slot:'7:00 - 8:00 AM',lab:'MedScan Labs',labArea:'Jubilee Hills',status:'delivered',amount:150,distance:'3.4 km',lat:17.4474,lng:78.3762,labLat:17.4310,labLng:78.4070},
+  {id:'HMT-0033',patient:'Deepa M.',address:'Flat 806, Aparna Sarovar, Nallagandla',tests:['CBC','CRP','Vitamin D'],tubes:[{test:'CBC',tube:'Purple EDTA',color:'purple'},{test:'CRP',tube:'Red SST',color:'red'},{test:'Vitamin D',tube:'Red SST',color:'red'}],slot:'8:00 - 9:00 AM',lab:'QuickTest Path Lab',labArea:'Madhapur',status:'delivered',amount:300,distance:'4.7 km',lat:17.4550,lng:78.3350,labLat:17.4486,labLng:78.3908},
+  {id:'HMT-0032',patient:'Ravi T.',address:'302, My Home Avatar, Gachibowli',tests:['HbA1c'],tubes:[{test:'HbA1c',tube:'Purple EDTA',color:'purple'}],slot:'9:00 - 10:00 AM',lab:'LifeCare Diagnostics',labArea:'Banjara Hills',status:'delivered',amount:150,distance:'3.9 km',lat:17.4380,lng:78.3500,labLat:17.4156,labLng:78.4347},
+  {id:'HMT-0031',patient:'Shalini P.',address:'504, Whistling Woods, Kokapet',tests:['LFT','KFT','CBC'],tubes:[{test:'LFT',tube:'Red SST',color:'red'},{test:'KFT',tube:'Red SST',color:'red'},{test:'CBC',tube:'Purple EDTA',color:'purple'}],slot:'10:00 - 11:00 AM',lab:'MedScan Labs',labArea:'Jubilee Hills',status:'delivered',amount:250,distance:'7.2 km',lat:17.4180,lng:78.3430,labLat:17.4310,labLng:78.4070},
+  {id:'HMT-0030',patient:'Kiran N.',address:'201, Phoenix Towers, Madhapur',tests:['Lipid Profile','Blood Sugar'],tubes:[{test:'Lipid Profile',tube:'Red SST',color:'red'},{test:'Blood Sugar',tube:'Grey Fluoride',color:'grey'}],slot:'6:00 - 7:00 AM',lab:'QuickTest Path Lab',labArea:'Madhapur',status:'delivered',amount:200,distance:'1.5 km',lat:17.4450,lng:78.3880,labLat:17.4486,labLng:78.3908},
+  {id:'HMT-0029',patient:'Anitha G.',address:'Flat 102, SLN Terminus, Gachibowli',tests:['CBC','ESR','CRP'],tubes:[{test:'CBC',tube:'Purple EDTA',color:'purple'},{test:'ESR',tube:'Blue Citrate',color:'blue'},{test:'CRP',tube:'Red SST',color:'red'}],slot:'7:30 - 8:30 AM',lab:'LifeCare Diagnostics',labArea:'Banjara Hills',status:'delivered',amount:250,distance:'4.0 km',lat:17.4410,lng:78.3480,labLat:17.4156,labLng:78.4347},
+  {id:'HMT-0028',patient:'Mahesh S.',address:'Villa 5, Luxor Villas, Kondapur',tests:['Vitamin B12','Iron Studies'],tubes:[{test:'Vitamin B12',tube:'Red SST',color:'red'},{test:'Iron Studies',tube:'Yellow SST',color:'yellow'}],slot:'8:30 - 9:30 AM',lab:'MedScan Labs',labArea:'Jubilee Hills',status:'delivered',amount:250,distance:'5.5 km',lat:17.4580,lng:78.3650,labLat:17.4310,labLng:78.4070}
+];
+
+// ===== LOGIN FLOW =====
+const phoneStep = document.getElementById('phoneStep');
+const otpStep = document.getElementById('otpStep');
+const phoneInput = document.getElementById('phoneInput');
+const otpPhone = document.getElementById('otpPhone');
+const otpInputs = document.querySelectorAll('#otpInputs input');
+const otpError = document.getElementById('otpError');
+const verifyBtn = document.getElementById('verifyOtpBtn');
+
+document.getElementById('sendOtpBtn').addEventListener('click', () => {
+  const phone = phoneInput.value.trim();
+  if (phone.length !== 10) return;
+  otpPhone.textContent = '+91 ' + phone;
+  phoneStep.classList.add('hide');
+  otpStep.classList.remove('hide');
+  setTimeout(() => otpInputs[0].focus(), 200);
+});
+
+otpInputs.forEach((inp, i) => {
+  inp.addEventListener('input', () => {
+    if (inp.value && i < 5) otpInputs[i + 1].focus();
+    checkOtp();
+  });
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Backspace' && !inp.value && i > 0) otpInputs[i - 1].focus();
+  });
+});
+
+function checkOtp() {
+  let val = '';
+  otpInputs.forEach(i => val += i.value);
+  verifyBtn.disabled = val.length !== 6;
+}
+
+verifyBtn.addEventListener('click', () => {
+  let val = '';
+  otpInputs.forEach(i => val += i.value);
+  // TODO: Verify OTP via /api/auth/verify-otp
+  if (val.length === 6) {
+    otpError.textContent = '';
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appShell').style.display = 'block';
+    document.getElementById('phleboName').textContent = PHLEBO.shortName;
+  } else {
+    otpError.textContent = 'Please enter a valid 6-digit OTP';
+  }
+});
+
+document.getElementById('resendOtp').addEventListener('click', e => {
+  e.preventDefault();
+  // TODO: Call /api/auth/resend-otp
+  showToast('OTP resent successfully');
+});
+
+// ===== ONLINE/OFFLINE TOGGLE =====
+let isOnline = false;
+const toggle = document.getElementById('onlineToggle');
+const statusCard = document.getElementById('statusCard');
+const toggleIcon = document.getElementById('toggleIcon');
+const toggleTitle = document.getElementById('toggleTitle');
+const toggleSub = document.getElementById('toggleSub');
+const offlineContent = document.getElementById('offlineContent');
+const onlineContent = document.getElementById('onlineContent');
+const headerBadge = document.getElementById('headerBadge');
+const headerBadgeText = document.getElementById('headerBadgeText');
+
+toggle.addEventListener('click', () => {
+  isOnline = !isOnline;
+  // TODO: Call /api/phlebo/toggle-status
+  if (isOnline) {
+    toggle.classList.add('on');
+    statusCard.classList.remove('offline');
+    toggleIcon.classList.remove('off');
+    toggleIcon.classList.add('on');
+    toggleIcon.innerHTML = '<i class="fas fa-signal"></i>';
+    toggleTitle.textContent = "You're Online";
+    toggleSub.textContent = 'Receiving assignments';
+    offlineContent.classList.add('hide');
+    onlineContent.classList.remove('hide');
+    headerBadge.className = 'online-badge is-online';
+    headerBadgeText.textContent = 'Online';
+  } else {
+    toggle.classList.remove('on');
+    statusCard.classList.add('offline');
+    toggleIcon.classList.remove('on');
+    toggleIcon.classList.add('off');
+    toggleIcon.innerHTML = '<i class="fas fa-power-off"></i>';
+    toggleTitle.textContent = "You're Offline";
+    toggleSub.textContent = 'Go online to receive orders';
+    offlineContent.classList.remove('hide');
+    onlineContent.classList.add('hide');
+    headerBadge.className = 'online-badge is-offline';
+    headerBadgeText.textContent = 'Offline';
+  }
+});
+
+// ===== TAB NAVIGATION =====
+const tabs = document.querySelectorAll('.bottom-nav button');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabs.forEach(btn => {
+  btn.addEventListener('click', () => {
+    tabs.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    tabContents.forEach(tc => tc.classList.remove('active'));
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    if (btn.dataset.tab === 'tabOrders') renderOrders();
+  });
+});
+
+// ===== ORDER RENDERING =====
+let currentFilter = 'assigned';
+
+document.querySelectorAll('.sub-tab').forEach(st => {
+  st.addEventListener('click', () => {
+    document.querySelectorAll('.sub-tab').forEach(s => s.classList.remove('active'));
+    st.classList.add('active');
+    currentFilter = st.dataset.filter;
+    renderOrders();
+  });
+});
+
+function renderOrders() {
+  const list = document.getElementById('ordersList');
+  let filtered = currentFilter === 'all' ? orders : orders.filter(o => o.status === currentFilter);
+  if (!filtered.length) {
+    list.innerHTML = '<div class="offline-msg"><i class="fas fa-inbox"></i><h3>No orders here</h3><p>Orders with this status will appear here.</p></div>';
+    return;
+  }
+  list.innerHTML = filtered.map(o => {
+    const statusLabel = {assigned:'Assigned',collecting:'Collecting',transit:'In Transit',delivered:'Delivered'}[o.status];
+    let actions = '';
+    if (o.status === 'assigned') {
+      actions = `<div class="order-actions">
+        <button class="order-btn outline" onclick="openMaps(${o.lat},${o.lng})"><i class="fas fa-diamond-turn-right"></i> Navigate</button>
+        <button class="order-btn primary" onclick="startCollection('${o.id}')"><i class="fas fa-vial"></i> Start Collection</button>
+      </div>`;
+    } else if (o.status === 'collecting') {
+      actions = `<div class="order-actions">
+        <button class="order-btn blue" onclick="startCollection('${o.id}')"><i class="fas fa-check-double"></i> Mark Collected</button>
+      </div>`;
+    } else if (o.status === 'transit') {
+      actions = `<div class="order-actions">
+        <button class="order-btn outline" onclick="openMaps(${o.labLat},${o.labLng})"><i class="fas fa-diamond-turn-right"></i> Navigate to Lab</button>
+        <button class="order-btn purple" onclick="markDelivered('${o.id}')"><i class="fas fa-check"></i> Mark Delivered</button>
+      </div>`;
+    } else if (o.status === 'delivered') {
+      actions = `<div class="order-actions">
+        <button class="order-btn outline" onclick="showDeliveredDetail('${o.id}')"><i class="fas fa-eye"></i> View Details</button>
+      </div>`;
+    }
+    return `<div class="order-card" data-status="${o.status}">
+      <div class="order-top">
+        <span class="order-id">#${o.id}</span>
+        <span class="status-badge ${o.status}">${statusLabel}</span>
+      </div>
+      <div class="order-patient">${o.patient}</div>
+      <div class="order-addr"><i class="fas fa-location-dot"></i>${o.address}</div>
+      <div class="order-tests">${o.tests.map(t=>`<span>${t}</span>`).join('')}</div>
+      <div class="order-footer">
+        <span><i class="far fa-clock"></i> ${o.slot}</span>
+        <span><i class="fas fa-flask"></i> ${o.lab}</span>
+        <span class="order-earned">\u20B9${o.amount}</span>
+      </div>
+      ${actions}
+    </div>`;
+  }).join('');
+}
+
+function updateCounts() {
+  const counts = {assigned:0,collecting:0,transit:0,delivered:0};
+  orders.forEach(o => counts[o.status]++);
+  const all = orders.length;
+  document.querySelectorAll('.sub-tab').forEach(st => {
+    const f = st.dataset.filter;
+    const c = f === 'all' ? all : (counts[f] || 0);
+    st.querySelector('.count').textContent = c;
+  });
+  const active = counts.assigned + counts.collecting;
+  document.getElementById('ordersBadge').textContent = active;
+  if (active === 0) document.getElementById('ordersBadge').style.display = 'none';
+  else document.getElementById('ordersBadge').style.display = 'flex';
+}
+
+// ===== COLLECTION FLOW =====
+let flowStep = 0;
+let flowOrder = null;
+
+function startCollection(orderId) {
+  flowOrder = orders.find(o => o.id === orderId);
+  if (!flowOrder) return;
+
+  // If status is collecting, go directly to step 1 (collect samples)
+  flowStep = flowOrder.status === 'collecting' ? 1 : 0;
+
+  // Set patient info
+  document.getElementById('flowPatientAvatar').textContent = flowOrder.patient.charAt(0);
+  document.getElementById('flowPatientName').textContent = flowOrder.patient;
+  document.getElementById('flowPatientAddr').textContent = flowOrder.address;
+  document.getElementById('flowTitle').textContent = flowOrder.status === 'collecting' ? 'Complete Collection' : 'Start Collection';
+
+  // Reset checkboxes
+  document.querySelectorAll('.flow-step input[type=checkbox]').forEach(cb => cb.checked = false);
+
+  // Build tube list
+  const tubesDiv = document.getElementById('flowTubes');
+  tubesDiv.innerHTML = flowOrder.tubes.map((t, i) => `
+    <div class="tube-item">
+      <div class="tube-color ${t.color}">${t.color.charAt(0).toUpperCase()}</div>
+      <div class="tube-info"><h5>${t.test}</h5><p>${t.tube} tube</p></div>
+      <input type="checkbox" id="tube${i}" data-tube="${i}">
+    </div>
+  `).join('');
+
+  updateFlowStep();
+  document.getElementById('collectionOverlay').classList.add('show');
+}
+
+function updateFlowStep() {
+  document.querySelectorAll('.flow-step').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.flow-step')[flowStep].classList.add('active');
+
+  document.querySelectorAll('.flow-step-dot').forEach((d, i) => {
+    d.classList.remove('active', 'done');
+    if (i === flowStep) d.classList.add('active');
+    else if (i < flowStep) d.classList.add('done');
+  });
+
+  const backBtn = document.getElementById('flowBack');
+  const nextBtn = document.getElementById('flowNext');
+
+  backBtn.style.display = flowStep === 0 ? 'none' : 'flex';
+
+  if (flowStep === 3) {
+    nextBtn.innerHTML = '<i class="fas fa-check-circle"></i> Confirm Collection';
+    nextBtn.className = 'flow-btn green';
+    buildSummary();
+  } else {
+    nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right"></i>';
+    nextBtn.className = 'flow-btn primary';
+  }
+}
+
+function buildSummary() {
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit'});
+  const dateStr = now.toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'});
+  document.getElementById('flowSummary').innerHTML = `
+    <div class="fs-row"><span class="fs-label">Order ID</span><span class="fs-val">#${flowOrder.id}</span></div>
+    <div class="fs-row"><span class="fs-label">Patient</span><span class="fs-val">${flowOrder.patient}</span></div>
+    <div class="fs-row"><span class="fs-label">Tubes Collected</span><span class="fs-val">${flowOrder.tubes.length} tubes</span></div>
+    <div class="fs-row"><span class="fs-label">Tests</span><span class="fs-val">${flowOrder.tests.join(', ')}</span></div>
+    <div class="fs-row"><span class="fs-label">Collection Time</span><span class="fs-val">${timeStr}, ${dateStr}</span></div>
+    <div class="fs-row"><span class="fs-label">Drop-off Lab</span><span class="fs-val">${flowOrder.lab}</span></div>
+  `;
+}
+
+function flowNext() {
+  if (flowStep < 3) {
+    flowStep++;
+    updateFlowStep();
+  } else {
+    // Confirm collection - move order to transit
+    // TODO: Call /api/orders/{id}/complete-collection
+    flowOrder.status = 'transit';
+    closeFlow();
+    updateCounts();
+    renderOrders();
+    showToast('Collection confirmed! Navigate to lab for drop-off.');
+  }
+}
+
+function flowPrev() {
+  if (flowStep > 0) {
+    flowStep--;
+    updateFlowStep();
+  }
+}
+
+function closeFlow() {
+  document.getElementById('collectionOverlay').classList.remove('show');
+}
+
+function toggleCheck(row) {
+  const cb = row.querySelector('input[type=checkbox]');
+  cb.checked = !cb.checked;
+}
+
+// ===== MARK DELIVERED =====
+function markDelivered(orderId) {
+  // TODO: Call /api/orders/{id}/mark-delivered
+  const order = orders.find(o => o.id === orderId);
+  if (order) {
+    if (confirm(`Confirm delivery of #${orderId} to ${order.lab}?`)) {
+      order.status = 'delivered';
+      updateCounts();
+      renderOrders();
+      showToast('Sample delivered to lab! Order complete.');
+    }
+  }
+}
+
+// ===== DELIVERED DETAIL =====
+function showDeliveredDetail(orderId) {
+  const o = orders.find(ord => ord.id === orderId);
+  if (!o) return;
+  document.getElementById('detailTitle').textContent = '#' + o.id;
+  document.getElementById('detailBody').innerHTML = `
+    <div style="margin-bottom:16px">
+      <div class="order-patient">${o.patient}</div>
+      <div class="order-addr" style="margin-bottom:8px"><i class="fas fa-location-dot"></i>${o.address}</div>
+      <div class="order-tests" style="margin-bottom:8px">${o.tests.map(t=>`<span>${t}</span>`).join('')}</div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text2)">
+        <span><i class="far fa-clock"></i> ${o.slot}</span>
+        <span class="order-earned" style="font-size:15px">\u20B9${o.amount}</span>
+      </div>
+    </div>
+    <h4 style="font-size:14px;margin-bottom:10px"><i class="fas fa-timeline" style="color:var(--accent);margin-right:4px"></i> Collection Timeline</h4>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"><i class="fas fa-clipboard-check"></i></div>
+        <div class="timeline-text"><h5>Order Assigned</h5><p>Today, 6:00 AM</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"><i class="fas fa-location-dot"></i></div>
+        <div class="timeline-text"><h5>Reached Patient Location</h5><p>Today, ${o.slot.split('-')[0].trim()}</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"><i class="fas fa-vial"></i></div>
+        <div class="timeline-text"><h5>Sample Collected</h5><p>${o.tubes.length} tube(s) collected</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"><i class="fas fa-truck"></i></div>
+        <div class="timeline-text"><h5>In Transit to Lab</h5><p>${o.lab}, ${o.labArea}</p></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"><i class="fas fa-check-circle"></i></div>
+        <div class="timeline-text"><h5>Delivered to Lab</h5><p>Sample accessioned at ${o.lab}</p></div>
+      </div>
+    </div>
+  `;
+  document.getElementById('detailOverlay').classList.add('show');
+}
+
+function closeDetail() {
+  document.getElementById('detailOverlay').classList.remove('show');
+}
+
+// ===== NAVIGATION =====
+function openMaps(lat, lng) {
+  // TODO: Use actual patient/lab coordinates
+  window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastText').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Initial render
+updateCounts();
+renderOrders();
+</script>
+</body>
+</html>
