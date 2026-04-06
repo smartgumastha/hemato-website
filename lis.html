@@ -2708,8 +2708,15 @@ function doLogout() {
   appState.enabledModules = [];
   localStorage.removeItem('mw_token');
   localStorage.removeItem('mw_hospital_id');
-  document.getElementById('appWrapper').classList.remove('active');
-  showAuthPanel('authLogin');
+  localStorage.removeItem('mw_login_data');
+
+  var host = window.location.hostname;
+  var loginUrls = {
+    'app.hemato.in': 'https://hms.medihost.in',
+    'lis.hemato.in': 'https://lis.medihost.in',
+    'physio.hemato.in': 'https://physio.medihost.in'
+  };
+  window.location.href = loginUrls[host] || 'https://hms.medihost.in';
 }
 
 /* OTP input auto-advance */
